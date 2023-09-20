@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EASEncoderFusion", "EASEncoder\EASEncoderFusion.csproj", "{AFD825E7-C024-4BC7-B41C-4D717C7680CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{041CD190-7D8E-4B2F-B250-A6B2351AD40C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EASEncoderFusion UI", "EASEncoder Test App\EASEncoderFusion UI.csproj", "{20918895-68F1-4DB2-BDAA-CE82E93340CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EASDecoderFusion UI", "EASDecoderFusion UI\EASDecoderFusion UI.csproj", "{D22E8AA6-C810-4B1F-BAEB-CBCFDFCCDBB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LongHeaderProject", "LongHeaderProject\LongHeaderProject.csproj", "{8F8F507F-3B6A-43FF-AF88-D22B46EB8F11}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Retail|Any CPU = Retail|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AFD825E7-C024-4BC7-B41C-4D717C7680CD}.Retail|Any CPU.ActiveCfg = Retail|Any CPU
+		{AFD825E7-C024-4BC7-B41C-4D717C7680CD}.Retail|Any CPU.Build.0 = Retail|Any CPU
+		{20918895-68F1-4DB2-BDAA-CE82E93340CE}.Retail|Any CPU.ActiveCfg = Retail|Any CPU
+		{20918895-68F1-4DB2-BDAA-CE82E93340CE}.Retail|Any CPU.Build.0 = Retail|Any CPU
+		{D22E8AA6-C810-4B1F-BAEB-CBCFDFCCDBB7}.Retail|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F8F507F-3B6A-43FF-AF88-D22B46EB8F11}.Retail|Any CPU.ActiveCfg = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {96469A5A-863F-4008-9F23-AC08BD441F86}
+	EndGlobalSection
+EndGlobal
