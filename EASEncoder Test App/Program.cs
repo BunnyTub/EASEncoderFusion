@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,10 +24,15 @@ namespace EASEncoder_UI
             Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath)
         };
     }
+
     internal static class Program
     {
         static Interesting Notify;
 
+
+        /// <summary>
+        /// The entry point for EASEncoder Fusion.
+        /// </summary>
         [STAThread]
         internal static void Main()
         {
@@ -44,8 +51,11 @@ namespace EASEncoder_UI
 
             int MajorVersion = 3;
             int MinorVersion = 1;
-            int Revision = 0;
+            int Revision = 2;
             string FusionVersion = "v" + MajorVersion.ToString() + "." + MinorVersion.ToString() + "." + Revision.ToString();
+
+            //MessageBox.Show("An account code is automatically generated on your machine. Violating FCC rules may result in your device being banned.\nClick YES to proceed.\nClick NO to terminate.");
+            //return;
 
             if (Settings.Default.VersionOpened != FusionVersion)
             {
@@ -62,6 +72,20 @@ namespace EASEncoder_UI
                 }
             }
 
+            //// Implement ID generation
+            //using (SHA512 sha512 = SHA512.Create())
+            //{
+            //    byte[] hashBytes = sha512.ComputeHash(Encoding.UTF8.GetBytes(DateTime.Now.Ticks.GetHashCode().ToString() + DateTime.Now.Ticks.ToString()));
+            //    StringBuilder sb = new StringBuilder();
+            //    foreach (byte b in hashBytes)
+            //    {
+            //        sb.Append(b.ToString("x2"));
+            //    }
+
+            //    //MessageBox.Show(sb.ToString());
+            //}
+
+            // Ask for username or shit idk
 
             string[] deviceNameList = {
                 //"QUANTUM-FURRET"
@@ -90,9 +114,9 @@ namespace EASEncoder_UI
             if (Settings.Default.Use95Design || Settings.Default.LegacyFont) Console.WriteLine("Using compatibility mode.");
             else new FusionPopup { Tag = FusionVersion }.ShowDialog();
 
-            foreach (string deviceName in deviceNameList)
+            foreach (string unique in deviceNameList)
             {
-                if (Environment.MachineName.ToUpper() == deviceName)
+                if (Environment.MachineName.ToUpper() == unique)
                 {
                     MessageBox.Show("This device is banned.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -111,15 +135,42 @@ namespace EASEncoder_UI
                 return;
             }
 
-                //MessageBox.Show("This program is in pre-release stages and is known to be unstable. Use caution before proceeding. Do not rely on this software for life threatening situations.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                if (Screen.PrimaryScreen.Bounds.Width < 1599 || Screen.PrimaryScreen.Bounds.Height < 899)
+
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (args.Length > 1)
+            {
+                string arg = args[1];
+                if (!string.IsNullOrEmpty(arg))
                 {
-                    MessageBox.Show("The resolution on this display is lower than the recommended minimum of 1600x900. Some elements may not fit on the screen.");
-                    //Settings.Default.LowRes = true;
-                    //Settings.Default.Save();
+                    if (arg == "-c")
+                    {
+                        //MessageBox.Show("This program is in pre-release stages and is known to be unstable. Use caution before proceeding. Do not rely on this software for life threatening situations.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        if (Screen.PrimaryScreen.Bounds.Width < 1599 || Screen.PrimaryScreen.Bounds.Height < 899)
+                        {
+                            MessageBox.Show("The resolution on this display is lower than the recommended minimum of 1600x900. Some elements may not fit on the screen.");
+                            //Settings.Default.LowRes = true;
+                            //Settings.Default.Save();
+                        }
+                        Application.Run(new CustomGenForm { Tag = FusionVersion });
+                        return;
+                    }
                 }
-                Application.Run(new MainForm { Tag = FusionVersion });
-                //Application.Run(new MainFormLowRes());
+            }
+            else
+            {
+                // Handle the case when the argument doesn't exist
+                // You can display an error message or take appropriate action.
+            }
+
+            //MessageBox.Show("This program is in pre-release stages and is known to be unstable. Use caution before proceeding. Do not rely on this software for life threatening situations.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (Screen.PrimaryScreen.Bounds.Width < 1599 || Screen.PrimaryScreen.Bounds.Height < 899)
+            {
+                MessageBox.Show("The resolution on this display is lower than the recommended minimum of 1600x900. Some elements may not fit on the screen.");
+                //Settings.Default.LowRes = true;
+                //Settings.Default.Save();
+            }
+            Application.Run(new MainForm { Tag = FusionVersion });
         }
 
         private static void UnhandledTaskTermination(object sender, UnobservedTaskExceptionEventArgs e)
@@ -267,8 +318,15 @@ namespace EASEncoder_UI
 
         internal static void Show()
         {
+            Application.ThreadException += Application_ThreadException;
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             HoldOnForm HoldOn = new HoldOnForm();
             HoldOn.ShowDialog(null);
+        }
+
+        internal static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            
         }
     }
 
@@ -276,8 +334,15 @@ namespace EASEncoder_UI
     {
         public static DialogResult Show(string text = "", string title = "EASEncoder Fusion", MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information)
         {
-            if (Settings.Default.SilenceErrors) return System.Windows.Forms.MessageBox.Show(text, title, buttons);
-            else return System.Windows.Forms.MessageBox.Show(text, title, buttons, icon);
+            try
+            {
+                if (Settings.Default.SilenceErrors) return System.Windows.Forms.MessageBox.Show(text, title, buttons);
+                else return System.Windows.Forms.MessageBox.Show(text, title, buttons, icon);
+            }
+            catch (Exception)
+            {
+                return DialogResult.None;
+            }
         }
     }
 

@@ -28,13 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.StaticProgress = new System.Windows.Forms.ProgressBar();
+            this.TakingTooLong = new System.Windows.Forms.Timer(this.components);
+            this.lblTooLong = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // StaticProgress
             // 
-            this.StaticProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.StaticProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StaticProgress.Location = new System.Drawing.Point(9, 9);
             this.StaticProgress.Margin = new System.Windows.Forms.Padding(0);
@@ -45,12 +47,30 @@
             this.StaticProgress.TabIndex = 0;
             this.StaticProgress.Value = 50;
             // 
+            // TakingTooLong
+            // 
+            this.TakingTooLong.Enabled = true;
+            this.TakingTooLong.Interval = 5000;
+            this.TakingTooLong.Tick += new System.EventHandler(this.TakingTooLong_Tick);
+            // 
+            // lblTooLong
+            // 
+            this.lblTooLong.BackColor = System.Drawing.Color.Transparent;
+            this.lblTooLong.LinkColor = System.Drawing.Color.White;
+            this.lblTooLong.Location = new System.Drawing.Point(9, 46);
+            this.lblTooLong.Name = "lblTooLong";
+            this.lblTooLong.Size = new System.Drawing.Size(366, 16);
+            this.lblTooLong.TabIndex = 1;
+            this.lblTooLong.Visible = false;
+            // 
             // HoldOnForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(384, 51);
+            this.ControlBox = false;
+            this.Controls.Add(this.lblTooLong);
             this.Controls.Add(this.StaticProgress);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
@@ -65,6 +85,7 @@
             this.Text = "Processing";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HoldOnForm_FormClosing);
+            this.Load += new System.EventHandler(this.HoldOnForm_Load);
             this.ResumeLayout(false);
 
         }
@@ -72,5 +93,7 @@
         #endregion
 
         private System.Windows.Forms.ProgressBar StaticProgress;
+        private System.Windows.Forms.Timer TakingTooLong;
+        private System.Windows.Forms.LinkLabel lblTooLong;
     }
 }

@@ -232,9 +232,9 @@
             this.lblEventBegin.Location = new System.Drawing.Point(6, 132);
             this.lblEventBegin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblEventBegin.Name = "lblEventBegin";
-            this.lblEventBegin.Size = new System.Drawing.Size(95, 15);
+            this.lblEventBegin.Size = new System.Drawing.Size(100, 15);
             this.lblEventBegin.TabIndex = 100;
-            this.lblEventBegin.Text = "Event Starting At";
+            this.lblEventBegin.Text = "Event Occurrence";
             // 
             // lblValidHours
             // 
@@ -331,7 +331,7 @@
             this.txtAnnouncement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.txtAnnouncement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtAnnouncement.ContextMenuStrip = this.EditContextMenu;
-            this.txtAnnouncement.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAnnouncement.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtAnnouncement.ForeColor = System.Drawing.Color.White;
             this.txtAnnouncement.Location = new System.Drawing.Point(508, 117);
             this.txtAnnouncement.Margin = new System.Windows.Forms.Padding(2);
@@ -603,7 +603,7 @@
             this.txtOutputFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtOutputFile.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtOutputFile.ForeColor = System.Drawing.Color.White;
-            this.txtOutputFile.Location = new System.Drawing.Point(908, 521);
+            this.txtOutputFile.Location = new System.Drawing.Point(909, 521);
             this.txtOutputFile.Margin = new System.Windows.Forms.Padding(2);
             this.txtOutputFile.Name = "txtOutputFile";
             this.txtOutputFile.Size = new System.Drawing.Size(201, 29);
@@ -636,9 +636,9 @@
             this.lblOutput.Location = new System.Drawing.Point(505, 414);
             this.lblOutput.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblOutput.Name = "lblOutput";
-            this.lblOutput.Size = new System.Drawing.Size(184, 20);
+            this.lblOutput.Size = new System.Drawing.Size(160, 20);
             this.lblOutput.TabIndex = 100;
-            this.lblOutput.Text = "Audio output is located in:";
+            this.lblOutput.Text = "Audio Output Location";
             // 
             // btnAbout
             // 

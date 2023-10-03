@@ -48,6 +48,10 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>EASfusionLogo.ico</ApplicationIcon>
@@ -81,11 +85,13 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Speech" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -100,6 +106,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugForm.Designer.cs">
+      <DependentUpon>DebugForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="HoldOnForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,24 +158,6 @@
     <Compile Include="Unused Forms\AlertForm.Designer.cs">
       <DependentUpon>AlertForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Unused Forms\DisplayForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Unused Forms\DisplayForm.Designer.cs">
-      <DependentUpon>DisplayForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Unused Forms\DisplayHelp1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Unused Forms\DisplayHelp1.Designer.cs">
-      <DependentUpon>DisplayHelp1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Unused Forms\DisplayHelp2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Unused Forms\DisplayHelp2.Designer.cs">
-      <DependentUpon>DisplayHelp2.cs</DependentUpon>
-    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -183,12 +177,6 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Unused Forms\MainFormLowRes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Unused Forms\MainFormLowRes.Designer.cs">
-      <DependentUpon>MainFormLowRes.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -196,6 +184,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DebugForm.resx">
+      <DependentUpon>DebugForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HoldOnForm.resx">
       <DependentUpon>HoldOnForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -217,15 +208,6 @@
     <EmbeddedResource Include="Unused Forms\AlertForm.resx">
       <DependentUpon>AlertForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Unused Forms\DisplayForm.resx">
-      <DependentUpon>DisplayForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Unused Forms\DisplayHelp1.resx">
-      <DependentUpon>DisplayHelp1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Unused Forms\DisplayHelp2.resx">
-      <DependentUpon>DisplayHelp2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -235,11 +217,8 @@
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Unused Forms\MainFormLowRes.resx">
-      <DependentUpon>MainFormLowRes.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.manifest" />
@@ -258,6 +237,7 @@
   <ItemGroup>
     <Content Include="16bit.ico" />
     <Content Include="EASfusionLogo.ico" />
+    <None Include="Resources\EASfusionLogo.ico" />
     <None Include="Resources\placeholder.png" />
     <None Include="Resources\error.png" />
     <None Include="Resources\minimize.png" />
@@ -266,7 +246,6 @@
     <None Include="Resources\warning.png" />
     <None Include="Resources\close_r.png" />
     <None Include="Resources\close.png" />
-    <None Include="Resources\instructions.gif" />
     <None Include="Resources\key.png" />
     <None Include="Resources\uac.png" />
     <None Include="Resources\null.png" />

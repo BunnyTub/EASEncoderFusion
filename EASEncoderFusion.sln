@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EASEncoderFusion UI", "EASE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EASDecoderFusion UI", "EASDecoderFusion UI\EASDecoderFusion UI.csproj", "{D22E8AA6-C810-4B1F-BAEB-CBCFDFCCDBB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LongHeaderProject", "LongHeaderProject\LongHeaderProject.csproj", "{8F8F507F-3B6A-43FF-AF88-D22B46EB8F11}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Retail|Any CPU = Retail|Any CPU
@@ -23,7 +21,6 @@ Global
 		{20918895-68F1-4DB2-BDAA-CE82E93340CE}.Retail|Any CPU.ActiveCfg = Retail|Any CPU
 		{20918895-68F1-4DB2-BDAA-CE82E93340CE}.Retail|Any CPU.Build.0 = Retail|Any CPU
 		{D22E8AA6-C810-4B1F-BAEB-CBCFDFCCDBB7}.Retail|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F8F507F-3B6A-43FF-AF88-D22B46EB8F11}.Retail|Any CPU.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

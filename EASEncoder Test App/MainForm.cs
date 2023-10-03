@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
 using System.Media;
 using System.Speech.Synthesis;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using EASEncoder.Models;
 using EASEncoder.Models.SAME;
@@ -18,6 +18,7 @@ using NAudio.Wave;
 
 namespace EASEncoder_UI
 {
+
     public partial class MainForm : Form
     {
         private readonly List<SAMERegion> Regions = new List<SAMERegion>();
@@ -60,6 +61,15 @@ namespace EASEncoder_UI
             var source = new BindingSource(bindingList, null);
             datagridRegions.DataSource = source;
 
+            //if (Debugger.IsAttached)
+            //{
+            //    btnShowDebug.Show();
+            //}
+            //else
+            //{
+            //    btnShowDebug.Hide();
+            //}
+
             dateStart.ShowUpDown = true;
             dateStart.CustomFormat = "MM/dd/yyyy hh:mm tt";
             dateStart.Format = DateTimePickerFormat.Custom;
@@ -92,9 +102,6 @@ namespace EASEncoder_UI
                 }
                 comboLengthHour.Items.Add(x.ToString());
             }
-
-            comboOriginator.DrawItem += ComboBox1_DrawItem;
-            comboOriginator.MeasureItem += ComboBox1_MeasureItem;
 
             this.ResumeLayout();
         }
@@ -179,26 +186,26 @@ namespace EASEncoder_UI
             }
         }
 
-        private void ComboBox1_MeasureItem(object sender, MeasureItemEventArgs e)
-        {
-            //e.ItemHeight = 20; // Set the desired item height
-        }
+        //private void ComboBox1_MeasureItem(object sender, MeasureItemEventArgs e)
+        //{
+        //    //e.ItemHeight = 20; // Set the desired item height
+        //}
 
-        private void ComboBox1_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            //// Check if the current item is the "Mock Alert" item
-            //if (e.Index >= 0 && comboOriginator.Items[e.Index].ToString() == "Mock Alert")
-            //{
-            //    // Set the desired color for the "Mock Alert" item
-            //    e.Graphics.DrawString(comboOriginator.Items[e.Index].ToString(), e.Font, Brushes.Red, e.Bounds);
-            //}
-            //else
-            //{
-            //    // Set the default color for other items
-            //    e.DrawBackground();
-            //    e.Graphics.DrawString(comboOriginator.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds);
-            //}
-        }
+        //private void ComboBox1_DrawItem(object sender, DrawItemEventArgs e)
+        //{
+        //    //// Check if the current item is the "Mock Alert" item
+        //    //if (e.Index >= 0 && comboOriginator.Items[e.Index].ToString() == "Mock Alert")
+        //    //{
+        //    //    // Set the desired color for the "Mock Alert" item
+        //    //    e.Graphics.DrawString(comboOriginator.Items[e.Index].ToString(), e.Font, Brushes.Red, e.Bounds);
+        //    //}
+        //    //else
+        //    //{
+        //    //    // Set the default color for other items
+        //    //    e.DrawBackground();
+        //    //    e.Graphics.DrawString(comboOriginator.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds);
+        //    //}
+        //}
 
 
         private void BtnGenerate_Click(object sender, EventArgs e)
@@ -300,10 +307,13 @@ namespace EASEncoder_UI
                 "Ending At: " + ClockEnd.ToString("u").Substring(0, ClockEnd.ToString("u").Length - 1) + " UTC\n" +
                 "Locations:\n" + locationText, "EASEncoder Fusion", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
+            MessageWait.ShowWait();
             var generatedData = EASEncoderFusion.EASEncoder.CreateNewMessage(newMessage, chkEbsTones.Checked, chkNwsTone.Checked, chkCensorTone.Checked,
                 FormatAnnouncement(txtAnnouncement.Text), chkBurstHeaders.Checked, txtOutputFile.Text);
             var generatedData2 = generatedData.Replace("\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab", "[Preamble]");
             txtGeneratedData.Text = generatedData2;
+            Thread.Sleep(500);
+            MessageWait.HideWait();
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -550,6 +560,7 @@ namespace EASEncoder_UI
                 }
                 MessageWait.ShowWait();
                 messageStream = EASEncoderFusion.EASEncoder.GetMemoryStreamFromSASMEX(_senderId);
+                Thread.Sleep(500);
                 MessageWait.HideWait();
             }
             else
@@ -580,6 +591,7 @@ namespace EASEncoder_UI
                 chkNwsTone.Checked, chkCensorTone.Checked, FormatAnnouncement(GetAnnouncementFromDetails()), chkBurstHeaders.Checked);
                 else messageStream = EASEncoderFusion.EASEncoder.GetMemoryStreamFromNewMessage(newMessage, chkEbsTones.Checked,
                 chkNwsTone.Checked, chkCensorTone.Checked, FormatAnnouncement(txtAnnouncement.Text), chkBurstHeaders.Checked);
+                Thread.Sleep(500);
                 MessageWait.HideWait();
             }
 
@@ -607,11 +619,18 @@ namespace EASEncoder_UI
 
             if (mainOutputStream.TotalTime.TotalSeconds > 120)
             {
-                if (MessageBox.Show($"The message you are attempting to send is longer than the maximum of 2 minutes ({(int)mainOutputStream.TotalTime.TotalSeconds} currently). Most decoders will abruptly cut off the message beyond the allocated time, and send the end of message tones." +
+                if (MessageBox.Show($"The message you are attempting to send is longer than the maximum of 120 seconds ({(int)mainOutputStream.TotalTime.TotalSeconds} seconds currently). Most decoders will abruptly cut off the message beyond the allocated time, and send the end of message tones." +
                     "\n\nDo you want to continue anyway?", "EASEncoder Fusion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                 {
-                    volumeStream.Dispose();
-                    mainOutputStream.Dispose();
+                    try
+                    {
+                        volumeStream.Dispose();
+                        mainOutputStream.Dispose();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                     return;
                 }
             }
@@ -894,10 +913,10 @@ namespace EASEncoder_UI
 
         private void BtnTTSSettings_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Some SAPI voices are currently incompatible.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //int b = 0;
-            //_ = 1 / b;
-            Process.Start("C:\\WINDOWS\\SYSWOW64\\SPEECH\\SPEECHUX\\SAPI.CPL");
+            MessageBox.Show("SAPI is currently unavailable.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //this.Icon = SystemIcons.Shield;
+            //MessageBox.Show("Some SAPI voices are currently incompatible.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //Process.Start("C:\\WINDOWS\\SYSWOW64\\SPEECH\\SPEECHUX\\SAPI.CPL");
             //var synthesizer = new SpeechSynthesizer();
 
             //// Get the installed voices
@@ -1394,6 +1413,7 @@ namespace EASEncoder_UI
 
         private void txtOutputFile_TextChanged(object sender, EventArgs e)
         {
+            if (txtOutputFile.Text == "FailFast") Environment.FailFast("User manually triggered failure.");
 
         }
 
@@ -1401,7 +1421,8 @@ namespace EASEncoder_UI
 
         private void btnRandomID_Click(object sender, EventArgs e)
         {
-            if (RandomizerClickAmount != 69) txtSender.Text = new string(Enumerable.Range(65, 26).OrderBy(_ => Guid.NewGuid()).Take(8).Select(x => (char)x).ToArray());
+            if (RandomizerClickAmount != 43 && RandomizerClickAmount != 69 && RandomizerClickAmount != 420) txtSender.Text = new string(Enumerable.Range(65, 26).OrderBy(_ => Guid.NewGuid()).Take(8).Select(x => (char)x).ToArray());
+            if (RandomizerClickAmount == 43) txtSender.Text = "43-CHARS";
             if (RandomizerClickAmount == 69) txtSender.Text = "6IX-9INE";
             if (RandomizerClickAmount == 420) txtSender.Text = "4OUR-20!";
             if (RandomizerClickAmount <= 420) RandomizerClickAmount++;

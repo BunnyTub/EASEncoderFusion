@@ -259,6 +259,7 @@
             this.comboOriginator.Size = new System.Drawing.Size(147, 29);
             this.comboOriginator.TabIndex = 102;
             this.comboOriginator.Tag = "disable";
+            this.comboOriginator.Visible = false;
             // 
             // AboutForm
             // 

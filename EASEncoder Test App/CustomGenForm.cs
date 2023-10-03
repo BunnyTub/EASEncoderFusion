@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EASEncoder_UI
@@ -29,26 +29,21 @@ namespace EASEncoder_UI
         private void button1_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Create your custom message?", "EASEncoder Fusion", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-            EASEncoderFusion.EASEncoder.CreateNewMessageFromRawData(message: txtCustomData.Text, ebsTone: checkBoxEBS.Checked, nwsTone: checkBoxNWR.Checked, censorTone: checkBoxNWR.Checked, filename: txtOutputFile.Text);
-            this.Close();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            this.SuspendLayout();
-            this.Size = new Size(544, 574);
-            button3.Enabled = false;
-            //button4.Show();
-            this.ResumeLayout();
+            MessageWait.ShowWait();
+            EASEncoderFusion.EASEncoder.CreateNewMessageFromRawData(message: txtCustomData.Text, ebsTone: checkBoxEBS.Checked, nwsTone: checkBoxNWR.Checked, censorTone: checkBoxCENSOR.Checked, filename: txtOutputFile.Text);
+            Thread.Sleep(500);
+            MessageWait.HideWait();
+            MessageBox.Show("Saved successfully.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            this.SuspendLayout();
-            this.Size = new Size(920, 574);
-            button3.Enabled = true;
-            button4.Hide();
-            this.ResumeLayout();
+            MessageBox.Show("The custom S.A.M.E. headers you generate may not comply withindustry standards. Please don't broadcast or air these headers on radio or television. As the operator of this software, you take the sole responsibility for any outcomes arising from its usage.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void CustomGenForm_Load(object sender, EventArgs e)
+        {
+            lblVersion.Text = this.Tag.ToString(); //+ "\nBunnyTub on Discord";
         }
     }
 }
