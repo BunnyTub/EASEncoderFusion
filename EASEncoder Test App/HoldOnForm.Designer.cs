@@ -62,12 +62,13 @@
             this.lblTooLong.Size = new System.Drawing.Size(366, 16);
             this.lblTooLong.TabIndex = 1;
             this.lblTooLong.Visible = false;
+            this.lblTooLong.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblTooLong_LinkClicked);
             // 
             // HoldOnForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
+            this.BackColor = System.Drawing.Color.Lime;
             this.ClientSize = new System.Drawing.Size(384, 51);
             this.ControlBox = false;
             this.Controls.Add(this.lblTooLong);

@@ -1,10 +1,9 @@
 ﻿using EASEncoder_UI.Properties;
+using Microsoft.Win32;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +28,37 @@ namespace EASEncoder_UI
     {
         static Interesting Notify;
 
+        //public static bool NETCheck()
+        //{
+        //    using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Client"))
+        //    {
+        //        if (key != null)
+        //        {
+        //            if (key.GetValue("Install") is int installed && installed == 1)
+        //            {
+        //                if (key.GetValue("Version") is string version && version.StartsWith("4.8"))
+        //                {
+        //                    return true;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return false;
+        //}
+        //
+        //if (!NETCheck())
+        //{
+        //    MessageBox.Show("It appears that .NET Framework 4.8 is not installed. Please install it from the Microsoft website.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    return;
+        //}
+        //
+        // Sadly had to remove or Windows Defender gets triggered.
+
+        static readonly int MajorVersion = 4;
+        static readonly int MinorVersion = 0;
+        static readonly int Revision = 0;
+        static readonly bool DevelopmentBuild = true;
+        static string FusionVersion = "v0.0.0";
 
         /// <summary>
         /// The entry point for EASEncoder Fusion.
@@ -36,92 +66,9 @@ namespace EASEncoder_UI
         [STAThread]
         internal static void Main()
         {
-            //Environment.GetCommandLineArgs();
-            //Environment.FailFast("Product activation was modified by the user. This is a violation of the licensing terms.");
-            //int a = 0;
-            //foreach (string arg in Environment.GetCommandLineArgs())
-            //{
-            //    if (a != 1)
-            //    {
-            //        a++;
-            //    }
-            //    if (arg == "") a++;
-            //    //MessageBox.Show(arg);
-            //}
-
-            int MajorVersion = 3;
-            int MinorVersion = 1;
-            int Revision = 2;
-            string FusionVersion = "v" + MajorVersion.ToString() + "." + MinorVersion.ToString() + "." + Revision.ToString();
-
-            //MessageBox.Show("An account code is automatically generated on your machine. Violating FCC rules may result in your device being banned.\nClick YES to proceed.\nClick NO to terminate.");
-            //return;
-
-            if (Settings.Default.VersionOpened != FusionVersion)
-            {
-                if (Settings.Default.VersionOpened != "v0.0.0")
-                {
-                    if (MessageBox.Show("Another version of the program has been detected.\nIt may malfunction if you open this version.\n\nDo you want to continue?", "EASEncoder Fusion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
-                    Settings.Default.VersionOpened = FusionVersion;
-                    Settings.Default.Save();
-                }
-                else
-                {
-                    Settings.Default.VersionOpened = FusionVersion;
-                    Settings.Default.Save();
-                }
-            }
-
-            //// Implement ID generation
-            //using (SHA512 sha512 = SHA512.Create())
-            //{
-            //    byte[] hashBytes = sha512.ComputeHash(Encoding.UTF8.GetBytes(DateTime.Now.Ticks.GetHashCode().ToString() + DateTime.Now.Ticks.ToString()));
-            //    StringBuilder sb = new StringBuilder();
-            //    foreach (byte b in hashBytes)
-            //    {
-            //        sb.Append(b.ToString("x2"));
-            //    }
-
-            //    //MessageBox.Show(sb.ToString());
-            //}
-
-            // Ask for username or shit idk
-
-            string[] deviceNameList = {
-                //"QUANTUM-FURRET"
-            };
-
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.ApplicationExit += ProperTermination;
-            Application.ThreadException += UnhandledTermination;
-            AppDomain.CurrentDomain.UnhandledException += AllUnhandledTermination;
-            TaskScheduler.UnobservedTaskException += UnhandledTaskTermination;
-            Settings.Default.SettingsSaving += SavingContents;
-
-            if (Settings.Default.Use95Design) Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
-            else Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.ClientAndNonClientAreasEnabled;
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(Settings.Default.LegacyFont);
-
-            Notify = new Interesting();
-            Notify.NtIcon.BalloonTipClicked += ErrorInformation;
-            Notify.NtIcon.BalloonTipClosed += ClosedWithoutClick;
-
-            //if (new BarScanForm().ShowDialog() != DialogResult.Yes) return;
-
-            //new UnhandledForm().ShowDialog();
-
-            if (Settings.Default.Use95Design || Settings.Default.LegacyFont) Console.WriteLine("Using compatibility mode.");
-            else new FusionPopup { Tag = FusionVersion }.ShowDialog();
-
-            foreach (string unique in deviceNameList)
-            {
-                if (Environment.MachineName.ToUpper() == unique)
-                {
-                    MessageBox.Show("This device is banned.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
+            FusionVersion = "v" + MajorVersion.ToString() + "." + MinorVersion.ToString() + "." + Revision.ToString();
+            Settings.Default.VersionOpened = FusionVersion;
+            Settings.Default.Save();
 
             if (!File.Exists("EASEncoderFusion.dll"))
             {
@@ -135,6 +82,30 @@ namespace EASEncoder_UI
                 return;
             }
 
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.ApplicationExit += ProperTermination;
+            Application.ThreadException += UnhandledTermination;
+            Settings.Default.SettingsSaving += SavingContents;
+
+            if (Settings.Default.Use95Design) Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
+            else Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.ClientAndNonClientAreasEnabled;
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(Settings.Default.LegacyFont);
+
+            Notify = new Interesting();
+            Notify.NtIcon.BalloonTipClicked += ErrorInformation;
+            Notify.NtIcon.BalloonTipClosed += ClosedWithoutClick;
+
+            new FusionPopup { Tag = DevelopmentBuild }.ShowDialog();
+
+            //foreach (string unique in deviceNameList)
+            //{
+            //    if (Environment.MachineName.ToUpper() == unique)
+            //    {
+            //        MessageBox.Show("This device is banned.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //        return;
+            //    }
+            //}
 
             string[] args = Environment.GetCommandLineArgs();
 
@@ -143,33 +114,15 @@ namespace EASEncoder_UI
                 string arg = args[1];
                 if (!string.IsNullOrEmpty(arg))
                 {
-                    if (arg == "-c")
+                    switch (arg)
                     {
-                        //MessageBox.Show("This program is in pre-release stages and is known to be unstable. Use caution before proceeding. Do not rely on this software for life threatening situations.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        if (Screen.PrimaryScreen.Bounds.Width < 1599 || Screen.PrimaryScreen.Bounds.Height < 899)
-                        {
-                            MessageBox.Show("The resolution on this display is lower than the recommended minimum of 1600x900. Some elements may not fit on the screen.");
-                            //Settings.Default.LowRes = true;
-                            //Settings.Default.Save();
-                        }
-                        Application.Run(new CustomGenForm { Tag = FusionVersion });
-                        return;
+                        case "-c":
+                            Application.Run(new CustomGenForm { Tag = FusionVersion });
+                            return;
                     }
                 }
             }
-            else
-            {
-                // Handle the case when the argument doesn't exist
-                // You can display an error message or take appropriate action.
-            }
 
-            //MessageBox.Show("This program is in pre-release stages and is known to be unstable. Use caution before proceeding. Do not rely on this software for life threatening situations.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            if (Screen.PrimaryScreen.Bounds.Width < 1599 || Screen.PrimaryScreen.Bounds.Height < 899)
-            {
-                MessageBox.Show("The resolution on this display is lower than the recommended minimum of 1600x900. Some elements may not fit on the screen.");
-                //Settings.Default.LowRes = true;
-                //Settings.Default.Save();
-            }
             Application.Run(new MainForm { Tag = FusionVersion });
         }
 
@@ -216,7 +169,7 @@ namespace EASEncoder_UI
             System.Windows.Forms.MessageBox.Show(HResult + "\n" + ExceptionMessage + "\n" + ExceptionStackTrace + "\n\nIt may be possible to continue normally.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
             foreach (Form form in Application.OpenForms)
             {
-                form.BringToFront();
+                if (form.CanFocus && !form.InvokeRequired) form.BringToFront();
             }
             Notify.NtIcon.Visible = true;
         }
@@ -275,24 +228,24 @@ namespace EASEncoder_UI
 
             if (e.Exception == new NullReferenceException())
             {
-                Debug.Fail("Null reference occurred in code. This may possibly be due to system events, and is probably not related to the application.");
-                Debug.WriteLine(e.Exception.Message);
-                Debug.Flush();
+                //Debug.Fail("Null reference occurred in code. This may possibly be due to system events, and is probably not related to the application.");
+                //Debug.WriteLine(e.Exception.Message);
+                //Debug.Flush();
                 return;
             }
 
             if (e.Exception.HResult == -2147467261)
             {
-                Debug.Fail("Object exists, but is not assigned. This may possibly be due to system events, and is probably not related to the application.");
-                Debug.WriteLine(e.Exception.Message);
-                Debug.Flush();
+                //Debug.Fail("Object exists, but is not assigned. This may possibly be due to system events, and is probably not related to the application.");
+                //Debug.WriteLine(e.Exception.Message);
+                //Debug.Flush();
                 return;
             }
             
-            try { MessageWait.HideWait(); } catch (Exception) { }
-            Debug.Fail("Failure. Check exception.");
-            Debug.WriteLine(e.Exception.Message);
-            Debug.Flush();
+            //try { MessageWait.HideWait(); } catch (Exception) { }
+            //Debug.Fail("Failure. Check exception.");
+            //Debug.WriteLine(e.Exception.Message);
+            //Debug.Flush();
             HResult = e.Exception.HResult.ToString();
             ExceptionMessage = e.Exception.Message;
             ExceptionStackTrace = e.Exception.StackTrace;
@@ -300,9 +253,228 @@ namespace EASEncoder_UI
         }
     }
 
+    static public class Theme
+    {
+        // /// <summary>
+        // /// Changes the provided Form to a theme.
+        // /// </summary>
+        // /// <param name="form">The Form to apply changes to.</param>
+
+        // Finished
+        public static void BlackStyle(Form form, bool loadOnly)
+        {
+            if (!loadOnly)
+            {
+                Settings.Default.StyleColor = "Black";
+                Settings.Default.Save();
+            }
+            form.BackColor = Color.Black;
+            form.ForeColor = Color.White;
+            foreach (Control ctrl in form.Controls)
+            {
+                if (!(ctrl is DataGridView) && !ctrl.Name.Contains("btnGenerate"))
+                {
+                    try
+                    {
+                        ctrl.BackColor = Color.Transparent;
+                    }
+                    catch (Exception)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 40, 40, 40);
+                    }
+
+                    if (ctrl is Button)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 40, 40, 40);
+                    }
+                    ctrl.ForeColor = Color.White;
+                    continue;
+                }
+
+                if (ctrl.Name == "datagridRegions")
+                {
+                    ((DataGridView)ctrl).BackgroundColor = Color.FromArgb(255, 40, 40, 40);
+                    ((DataGridView)ctrl).GridColor = Color.FromArgb(255, 40, 40, 40);
+                    ((DataGridView)ctrl).DefaultCellStyle.BackColor = SystemColors.WindowFrame;
+                    ((DataGridView)ctrl).DefaultCellStyle.ForeColor = Color.FromArgb(255, 255, 255, 255);
+                    continue;
+                }
+            }
+        }
+
+        // Finished
+        public static void WhiteStyle(Form form, bool loadOnly)
+        {
+            if (!loadOnly)
+            {
+                Settings.Default.StyleColor = "White";
+                Settings.Default.Save();
+            }
+            form.BackColor = Color.FromArgb(255, 255, 255, 255);
+            form.ForeColor = Color.FromArgb(255, 0, 0, 0);
+            foreach (Control ctrl in form.Controls)
+            {
+                if (!ctrl.Name.Contains("btnGenerate") && !(ctrl is DataGridView))
+                {
+                    try
+                    {
+                        ctrl.BackColor = Color.Transparent;
+                    }
+                    catch (Exception)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 235, 235, 235);
+                    }
+
+                    if (ctrl is Button)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 235, 235, 235);
+                    }
+                    ctrl.ForeColor = Color.Black;
+                    continue;
+                }
+
+                if (ctrl is DataGridView grid)
+                {
+                    grid.BackgroundColor = Color.FromArgb(255, 255, 255, 255);
+                    grid.GridColor = Color.FromArgb(255, 235, 235, 235);
+                    grid.DefaultCellStyle.BackColor = Color.FromArgb(255, 235, 235, 235);
+                    grid.DefaultCellStyle.ForeColor = Color.FromArgb(255, 0, 0, 0);
+                    continue;
+                }
+            }
+        }
+
+        // Finished
+        public static void RedStyle(Form form, bool loadOnly)
+        {
+            if (!loadOnly)
+            {
+                Settings.Default.StyleColor = "Red";
+                Settings.Default.Save();
+            }
+            form.BackColor = Color.DarkRed;
+            form.ForeColor = Color.White;
+            foreach (Control ctrl in form.Controls)
+            {
+                if (!(ctrl is DataGridView) && !ctrl.Name.Contains("btnGenerate"))
+                {
+                    try
+                    {
+                        ctrl.BackColor = Color.Transparent;
+                    }
+                    catch (Exception)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 220, 0, 0);
+                    }
+
+                    if (ctrl is Button)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 220, 0, 0);
+                    }
+                    ctrl.ForeColor = Color.White;
+                    continue;
+                }
+
+                if (ctrl is DataGridView grid)
+                {
+                    grid.BackgroundColor = Color.FromArgb(255, 255, 0, 0);
+                    grid.GridColor = Color.FromArgb(255, 220, 0, 0);
+                    grid.DefaultCellStyle.BackColor = Color.FromArgb(255, 220, 0, 0);
+                    grid.DefaultCellStyle.ForeColor = Color.FromArgb(255, 255, 255, 255);
+                    continue;
+                }
+            }
+        }
+
+        // Finished
+        public static void GreenStyle(Form form, bool loadOnly)
+        {
+            if (!loadOnly)
+            {
+                Settings.Default.StyleColor = "Green";
+                Settings.Default.Save();
+            }
+            form.BackColor = Color.DarkGreen;
+            form.ForeColor = Color.White;
+            foreach (Control ctrl in form.Controls)
+            {
+                if (!(ctrl is DataGridView) && !ctrl.Name.Contains("btnGenerate"))
+                {
+                    try
+                    {
+                        ctrl.BackColor = Color.Transparent;
+                    }
+                    catch (Exception)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 0, 200, 0);
+                    }
+
+                    if (ctrl is Button)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 0, 200, 0);
+                    }
+                    ctrl.ForeColor = Color.White;
+                    continue;
+                }
+
+                if (ctrl is DataGridView grid)
+                {
+                    grid.BackgroundColor = Color.FromArgb(255, 0, 220, 0);
+                    grid.GridColor = Color.FromArgb(255, 0, 200, 0);
+                    grid.DefaultCellStyle.BackColor = Color.FromArgb(255, 0, 200, 0);
+                    grid.DefaultCellStyle.ForeColor = Color.FromArgb(255, 255, 255, 255);
+                    continue;
+                }
+            }
+        }
+
+        // Finished
+        public static void BlueStyle(Form form, bool loadOnly)
+        {
+            if (!loadOnly)
+            {
+                Settings.Default.StyleColor = "Blue";
+                Settings.Default.Save();
+            }
+            form.BackColor = Color.DarkBlue;
+            form.ForeColor = Color.White;
+            foreach (Control ctrl in form.Controls)
+            {
+                if (!(ctrl is DataGridView) && !ctrl.Name.Contains("btnGenerate"))
+                {
+                    try
+                    {
+                        ctrl.BackColor = Color.Transparent;
+                    }
+                    catch (Exception)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 0, 0, 220);
+                    }
+
+                    if (ctrl is Button)
+                    {
+                        ctrl.BackColor = Color.FromArgb(255, 0, 0, 220);
+                    }
+                    ctrl.ForeColor = Color.White;
+                    continue;
+                }
+
+                if (ctrl is DataGridView grid)
+                {
+                    grid.BackgroundColor = Color.FromArgb(255, 0, 0, 100);
+                    grid.GridColor = Color.FromArgb(255, 0, 0, 220);
+                    grid.DefaultCellStyle.BackColor = Color.FromArgb(255, 0, 0, 220);
+                    grid.DefaultCellStyle.ForeColor = Color.FromArgb(255, 255, 255, 255);
+                    continue;
+                }
+            }
+        }
+    }
+
     public static class MessageWait
     {
         static Thread t;
+
         public static void ShowWait()
         {
             t = new Thread(new ThreadStart(Show));
@@ -312,22 +484,29 @@ namespace EASEncoder_UI
 
         public static void HideWait()
         {
-            if (t.ThreadState == System.Threading.ThreadState.Running) t.Abort();
+            if (t.ThreadState == ThreadState.Running)
+            {
+                HoldOn.CloseForm();
+                t.Join();
+            }
             t = null;
         }
+
+        internal static HoldOnForm HoldOn = new HoldOnForm();
 
         internal static void Show()
         {
             Application.ThreadException += Application_ThreadException;
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            HoldOnForm HoldOn = new HoldOnForm();
-            HoldOn.ShowDialog(null);
+            HoldOn = new HoldOnForm();
+            HoldOn.ShowDialog();
         }
 
-        internal static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            
+
         }
+
     }
 
     public static class MessageBox

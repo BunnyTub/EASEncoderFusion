@@ -1,6 +1,6 @@
 ﻿namespace EASEncoder_UI
 {
-    partial class AboutForm
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.lblProduct = new System.Windows.Forms.Label();
             this.lblAuthor = new System.Windows.Forms.Label();
             this.lblWarning = new System.Windows.Forms.Label();
@@ -44,7 +44,13 @@
             this.lblLowRes = new System.Windows.Forms.Label();
             this.btnResetSettings = new System.Windows.Forms.Button();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.comboOriginator = new System.Windows.Forms.ComboBox();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
+            this.txtDiscordWebhook = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboTheme = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lblProduct
@@ -53,7 +59,7 @@
             this.lblProduct.AutoSize = true;
             this.lblProduct.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProduct.ForeColor = System.Drawing.Color.White;
-            this.lblProduct.Location = new System.Drawing.Point(6, 373);
+            this.lblProduct.Location = new System.Drawing.Point(6, 435);
             this.lblProduct.Name = "lblProduct";
             this.lblProduct.Size = new System.Drawing.Size(258, 37);
             this.lblProduct.TabIndex = 100;
@@ -65,13 +71,13 @@
             this.lblAuthor.AutoSize = true;
             this.lblAuthor.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.lblAuthor.ForeColor = System.Drawing.Color.White;
-            this.lblAuthor.Location = new System.Drawing.Point(469, 138);
+            this.lblAuthor.Location = new System.Drawing.Point(484, 144);
             this.lblAuthor.Name = "lblAuthor";
-            this.lblAuthor.Size = new System.Drawing.Size(320, 120);
+            this.lblAuthor.Size = new System.Drawing.Size(339, 120);
             this.lblAuthor.TabIndex = 100;
-            this.lblAuthor.Text = "This project was originally called EASEncoder.\r\nForked from Wolf20482.\r\n\r\nDevelop" +
-    "er: BunnyTub\r\nLogo Designer: ApatheticDELL\r\nLicense: GNU Lesser General Public L" +
-    "icense v3.0";
+            this.lblAuthor.Text = "This project was originally called EASEncoder.\r\nForked from SotaJoe who forked fr" +
+    "om Wolf20482.\r\n\r\nDeveloper: BunnyTub\r\nLogo Designer: ApatheticDELL\r\nLicense: GNU" +
+    " Lesser General Public License v3.0";
             this.lblAuthor.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lblAuthor.Click += new System.EventHandler(this.label2_Click);
             // 
@@ -80,8 +86,8 @@
             this.lblWarning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblWarning.AutoSize = true;
             this.lblWarning.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblWarning.ForeColor = System.Drawing.Color.Red;
-            this.lblWarning.Location = new System.Drawing.Point(451, 9);
+            this.lblWarning.ForeColor = System.Drawing.Color.White;
+            this.lblWarning.Location = new System.Drawing.Point(484, 9);
             this.lblWarning.Name = "lblWarning";
             this.lblWarning.Size = new System.Drawing.Size(339, 120);
             this.lblWarning.TabIndex = 100;
@@ -95,7 +101,7 @@
             this.btnApply.FlatAppearance.BorderSize = 0;
             this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnApply.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.btnApply.Location = new System.Drawing.Point(643, 317);
+            this.btnApply.Location = new System.Drawing.Point(676, 379);
             this.btnApply.Margin = new System.Windows.Forms.Padding(2);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(147, 57);
@@ -112,7 +118,7 @@
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnCancel.Location = new System.Drawing.Point(643, 378);
+            this.btnCancel.Location = new System.Drawing.Point(676, 440);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(147, 30);
@@ -207,7 +213,7 @@
             this.lblLowRes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLowRes.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.lblLowRes.ForeColor = System.Drawing.Color.White;
-            this.lblLowRes.Location = new System.Drawing.Point(-293, -121);
+            this.lblLowRes.Location = new System.Drawing.Point(-293, -59);
             this.lblLowRes.Name = "lblLowRes";
             this.lblLowRes.Size = new System.Drawing.Size(288, 116);
             this.lblLowRes.TabIndex = 28;
@@ -216,11 +222,12 @@
             // 
             // btnResetSettings
             // 
+            this.btnResetSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnResetSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.btnResetSettings.FlatAppearance.BorderSize = 0;
             this.btnResetSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnResetSettings.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnResetSettings.Location = new System.Drawing.Point(13, 348);
+            this.btnResetSettings.Location = new System.Drawing.Point(13, 410);
             this.btnResetSettings.Margin = new System.Windows.Forms.Padding(2);
             this.btnResetSettings.Name = "btnResetSettings";
             this.btnResetSettings.Size = new System.Drawing.Size(147, 30);
@@ -241,33 +248,106 @@
             this.checkBox6.Text = "Show non-compliant options";
             this.checkBox6.UseVisualStyleBackColor = true;
             // 
-            // comboOriginator
+            // checkBox7
             // 
-            this.comboOriginator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.comboOriginator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboOriginator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboOriginator.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.comboOriginator.ForeColor = System.Drawing.Color.White;
-            this.comboOriginator.FormattingEnabled = true;
-            this.comboOriginator.Items.AddRange(new object[] {
-            "United States",
-            "Canada",
-            "Other"});
-            this.comboOriginator.Location = new System.Drawing.Point(643, 284);
-            this.comboOriginator.Margin = new System.Windows.Forms.Padding(2);
-            this.comboOriginator.Name = "comboOriginator";
-            this.comboOriginator.Size = new System.Drawing.Size(147, 29);
-            this.comboOriginator.TabIndex = 102;
-            this.comboOriginator.Tag = "disable";
-            this.comboOriginator.Visible = false;
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.checkBox7.Location = new System.Drawing.Point(13, 197);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(137, 19);
+            this.checkBox7.TabIndex = 103;
+            this.checkBox7.Text = "Disable splash screen";
+            this.checkBox7.UseVisualStyleBackColor = true;
             // 
-            // AboutForm
+            // checkBox8
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Enabled = false;
+            this.checkBox8.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.checkBox8.Location = new System.Drawing.Point(13, 222);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(288, 19);
+            this.checkBox8.TabIndex = 106;
+            this.checkBox8.Text = "Use audio instead of TTS (must be named tts.wav)";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.checkBox9.Location = new System.Drawing.Point(13, 247);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(241, 19);
+            this.checkBox9.TabIndex = 107;
+            this.checkBox9.Text = "Use lead in (must be named lead-in.wav)";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            // 
+            // checkBox10
+            // 
+            this.checkBox10.AutoSize = true;
+            this.checkBox10.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.checkBox10.Location = new System.Drawing.Point(13, 272);
+            this.checkBox10.Name = "checkBox10";
+            this.checkBox10.Size = new System.Drawing.Size(257, 19);
+            this.checkBox10.TabIndex = 108;
+            this.checkBox10.Text = "Use lead out (must be named lead-out.wav)";
+            this.checkBox10.UseVisualStyleBackColor = true;
+            // 
+            // txtDiscordWebhook
+            // 
+            this.txtDiscordWebhook.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.txtDiscordWebhook.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDiscordWebhook.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtDiscordWebhook.ForeColor = System.Drawing.Color.White;
+            this.txtDiscordWebhook.Location = new System.Drawing.Point(13, 311);
+            this.txtDiscordWebhook.Margin = new System.Windows.Forms.Padding(2);
+            this.txtDiscordWebhook.MaxLength = 512;
+            this.txtDiscordWebhook.Name = "txtDiscordWebhook";
+            this.txtDiscordWebhook.Size = new System.Drawing.Size(345, 25);
+            this.txtDiscordWebhook.TabIndex = 110;
+            this.txtDiscordWebhook.Tag = "disable";
+            this.txtDiscordWebhook.UseSystemPasswordChar = true;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(10, 294);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(241, 15);
+            this.label2.TabIndex = 112;
+            this.label2.Text = "Listen to TCP stream (Leave blank to disable)";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // comboTheme
+            // 
+            this.comboTheme.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.comboTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTheme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboTheme.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.comboTheme.ForeColor = System.Drawing.Color.White;
+            this.comboTheme.FormattingEnabled = true;
+            this.comboTheme.Location = new System.Drawing.Point(676, 346);
+            this.comboTheme.Margin = new System.Windows.Forms.Padding(2);
+            this.comboTheme.Name = "comboTheme";
+            this.comboTheme.Size = new System.Drawing.Size(147, 29);
+            this.comboTheme.TabIndex = 114;
+            this.comboTheme.Tag = "disable";
+            // 
+            // SettingsForm
+            // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(801, 419);
-            this.Controls.Add(this.comboOriginator);
+            this.ClientSize = new System.Drawing.Size(834, 481);
+            this.Controls.Add(this.comboTheme);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.txtDiscordWebhook);
+            this.Controls.Add(this.checkBox10);
+            this.Controls.Add(this.checkBox9);
+            this.Controls.Add(this.checkBox8);
+            this.Controls.Add(this.checkBox7);
             this.Controls.Add(this.checkBox6);
             this.Controls.Add(this.btnResetSettings);
             this.Controls.Add(this.lblWarning);
@@ -284,12 +364,13 @@
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.lblProduct);
             this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AboutForm";
+            this.Name = "SettingsForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "EASEncoder Fusion Settings";
@@ -315,6 +396,12 @@
         private System.Windows.Forms.Label lblLowRes;
         private System.Windows.Forms.Button btnResetSettings;
         private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.ComboBox comboOriginator;
+        private System.Windows.Forms.CheckBox checkBox7;
+        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox checkBox9;
+        private System.Windows.Forms.CheckBox checkBox10;
+        private System.Windows.Forms.TextBox txtDiscordWebhook;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboTheme;
     }
 }

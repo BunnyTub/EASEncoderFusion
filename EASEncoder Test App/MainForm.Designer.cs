@@ -44,7 +44,7 @@
             this.lblValidHours = new System.Windows.Forms.Label();
             this.txtSender = new System.Windows.Forms.TextBox();
             this.lblSender = new System.Windows.Forms.Label();
-            this.btnGenerate = new System.Windows.Forms.Button();
+            this.btnGenerate = new EASEncoder_UI.SpecialButton();
             this.chkEbsTones = new System.Windows.Forms.CheckBox();
             this.chkNwsTone = new System.Windows.Forms.CheckBox();
             this.txtAnnouncement = new System.Windows.Forms.TextBox();
@@ -62,7 +62,7 @@
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnGeneratePlay = new System.Windows.Forms.Button();
+            this.btnGeneratePlay = new EASEncoder_UI.SpecialButton();
             this.datagridRegions = new System.Windows.Forms.DataGridView();
             this.btnAddRegion = new System.Windows.Forms.Button();
             this.lblAddedLocations = new System.Windows.Forms.Label();
@@ -91,6 +91,12 @@
             this.chkCensorTone = new System.Windows.Forms.CheckBox();
             this.btnRandomID = new System.Windows.Forms.Button();
             this.Randomization = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.chkSimulateENDEC = new System.Windows.Forms.CheckBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.EditContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.datagridRegions)).BeginInit();
             this.LocationContextMenu.SuspendLayout();
@@ -104,7 +110,7 @@
             this.comboState.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.comboState.ForeColor = System.Drawing.Color.White;
             this.comboState.FormattingEnabled = true;
-            this.comboState.Location = new System.Drawing.Point(9, 209);
+            this.comboState.Location = new System.Drawing.Point(10, 209);
             this.comboState.Margin = new System.Windows.Forms.Padding(2);
             this.comboState.Name = "comboState";
             this.comboState.Size = new System.Drawing.Size(236, 29);
@@ -116,11 +122,11 @@
             // 
             this.lblState.AutoSize = true;
             this.lblState.BackColor = System.Drawing.Color.Transparent;
-            this.lblState.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblState.Location = new System.Drawing.Point(6, 191);
+            this.lblState.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblState.Location = new System.Drawing.Point(5, 187);
             this.lblState.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblState.Name = "lblState";
-            this.lblState.Size = new System.Drawing.Size(33, 15);
+            this.lblState.Size = new System.Drawing.Size(43, 20);
             this.lblState.TabIndex = 100;
             this.lblState.Text = "State";
             // 
@@ -128,11 +134,11 @@
             // 
             this.lblCounty.AutoSize = true;
             this.lblCounty.BackColor = System.Drawing.Color.Transparent;
-            this.lblCounty.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblCounty.Location = new System.Drawing.Point(265, 191);
+            this.lblCounty.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblCounty.Location = new System.Drawing.Point(264, 187);
             this.lblCounty.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCounty.Name = "lblCounty";
-            this.lblCounty.Size = new System.Drawing.Size(46, 15);
+            this.lblCounty.Size = new System.Drawing.Size(55, 20);
             this.lblCounty.TabIndex = 100;
             this.lblCounty.Text = "County";
             // 
@@ -156,11 +162,11 @@
             // 
             this.lblCode.AutoSize = true;
             this.lblCode.BackColor = System.Drawing.Color.Transparent;
-            this.lblCode.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblCode.Location = new System.Drawing.Point(6, 69);
+            this.lblCode.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblCode.Location = new System.Drawing.Point(5, 64);
             this.lblCode.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCode.Name = "lblCode";
-            this.lblCode.Size = new System.Drawing.Size(63, 15);
+            this.lblCode.Size = new System.Drawing.Size(80, 20);
             this.lblCode.TabIndex = 100;
             this.lblCode.Text = "Event Type";
             // 
@@ -172,10 +178,10 @@
             this.comboCode.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.comboCode.ForeColor = System.Drawing.Color.White;
             this.comboCode.FormattingEnabled = true;
-            this.comboCode.Location = new System.Drawing.Point(9, 86);
+            this.comboCode.Location = new System.Drawing.Point(10, 86);
             this.comboCode.Margin = new System.Windows.Forms.Padding(2);
             this.comboCode.Name = "comboCode";
-            this.comboCode.Size = new System.Drawing.Size(477, 29);
+            this.comboCode.Size = new System.Drawing.Size(475, 29);
             this.comboCode.TabIndex = 2;
             this.comboCode.Tag = "disable";
             this.comboCode.SelectedIndexChanged += new System.EventHandler(this.ComboCode_SelectedIndexChanged);
@@ -184,11 +190,11 @@
             // 
             this.lblOriginator.AutoSize = true;
             this.lblOriginator.BackColor = System.Drawing.Color.Transparent;
-            this.lblOriginator.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblOriginator.Location = new System.Drawing.Point(6, 12);
+            this.lblOriginator.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblOriginator.Location = new System.Drawing.Point(5, 7);
             this.lblOriginator.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblOriginator.Name = "lblOriginator";
-            this.lblOriginator.Size = new System.Drawing.Size(61, 15);
+            this.lblOriginator.Size = new System.Drawing.Size(77, 20);
             this.lblOriginator.TabIndex = 100;
             this.lblOriginator.Text = "Originator";
             // 
@@ -200,7 +206,7 @@
             this.comboOriginator.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.comboOriginator.ForeColor = System.Drawing.Color.White;
             this.comboOriginator.FormattingEnabled = true;
-            this.comboOriginator.Location = new System.Drawing.Point(9, 29);
+            this.comboOriginator.Location = new System.Drawing.Point(10, 29);
             this.comboOriginator.Margin = new System.Windows.Forms.Padding(2);
             this.comboOriginator.Name = "comboOriginator";
             this.comboOriginator.Size = new System.Drawing.Size(278, 29);
@@ -217,7 +223,7 @@
             this.dateStart.CalendarTitleForeColor = System.Drawing.Color.White;
             this.dateStart.CalendarTrailingForeColor = System.Drawing.Color.DimGray;
             this.dateStart.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.dateStart.Location = new System.Drawing.Point(9, 149);
+            this.dateStart.Location = new System.Drawing.Point(10, 149);
             this.dateStart.Margin = new System.Windows.Forms.Padding(2);
             this.dateStart.Name = "dateStart";
             this.dateStart.Size = new System.Drawing.Size(278, 29);
@@ -228,11 +234,11 @@
             // 
             this.lblEventBegin.AutoSize = true;
             this.lblEventBegin.BackColor = System.Drawing.Color.Transparent;
-            this.lblEventBegin.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblEventBegin.Location = new System.Drawing.Point(6, 132);
+            this.lblEventBegin.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblEventBegin.Location = new System.Drawing.Point(5, 127);
             this.lblEventBegin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblEventBegin.Name = "lblEventBegin";
-            this.lblEventBegin.Size = new System.Drawing.Size(100, 15);
+            this.lblEventBegin.Size = new System.Drawing.Size(123, 20);
             this.lblEventBegin.TabIndex = 100;
             this.lblEventBegin.Text = "Event Occurrence";
             // 
@@ -240,13 +246,13 @@
             // 
             this.lblValidHours.AutoSize = true;
             this.lblValidHours.BackColor = System.Drawing.Color.Transparent;
-            this.lblValidHours.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblValidHours.Location = new System.Drawing.Point(296, 132);
+            this.lblValidHours.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblValidHours.Location = new System.Drawing.Point(295, 127);
             this.lblValidHours.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblValidHours.Name = "lblValidHours";
-            this.lblValidHours.Size = new System.Drawing.Size(92, 15);
+            this.lblValidHours.Size = new System.Drawing.Size(85, 20);
             this.lblValidHours.TabIndex = 100;
-            this.lblValidHours.Text = "Purge in (hours)";
+            this.lblValidHours.Text = "Purge in (h)";
             // 
             // txtSender
             // 
@@ -259,7 +265,7 @@
             this.txtSender.MaxLength = 8;
             this.txtSender.Multiline = true;
             this.txtSender.Name = "txtSender";
-            this.txtSender.Size = new System.Drawing.Size(154, 29);
+            this.txtSender.Size = new System.Drawing.Size(153, 29);
             this.txtSender.TabIndex = 1;
             this.txtSender.Tag = "disable";
             this.txtSender.TextChanged += new System.EventHandler(this.txtSender_TextChanged);
@@ -268,13 +274,13 @@
             // 
             this.lblSender.AutoSize = true;
             this.lblSender.BackColor = System.Drawing.Color.Transparent;
-            this.lblSender.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblSender.Location = new System.Drawing.Point(296, 12);
+            this.lblSender.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblSender.Location = new System.Drawing.Point(295, 7);
             this.lblSender.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSender.Name = "lblSender";
-            this.lblSender.Size = new System.Drawing.Size(107, 15);
+            this.lblSender.Size = new System.Drawing.Size(74, 20);
             this.lblSender.TabIndex = 100;
-            this.lblSender.Text = "Sender ID (8 Chars)";
+            this.lblSender.Text = "Sender ID";
             // 
             // btnGenerate
             // 
@@ -290,7 +296,7 @@
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(147, 160);
             this.btnGenerate.TabIndex = 22;
-            this.btnGenerate.Tag = "disable";
+            this.btnGenerate.Tag = "special";
             this.btnGenerate.Text = "SAVE";
             this.btnGenerate.UseVisualStyleBackColor = false;
             this.btnGenerate.Click += new System.EventHandler(this.BtnGenerate_Click);
@@ -484,31 +490,38 @@
             this.btnGeneratePlay.Name = "btnGeneratePlay";
             this.btnGeneratePlay.Size = new System.Drawing.Size(147, 160);
             this.btnGeneratePlay.TabIndex = 20;
+            this.btnGeneratePlay.Tag = "special";
             this.btnGeneratePlay.Text = "PLAY";
             this.btnGeneratePlay.UseVisualStyleBackColor = false;
             this.btnGeneratePlay.Click += new System.EventHandler(this.Button1_Click);
             // 
             // datagridRegions
             // 
+            this.datagridRegions.AllowUserToAddRows = false;
+            this.datagridRegions.AllowUserToResizeColumns = false;
+            this.datagridRegions.AllowUserToResizeRows = false;
             this.datagridRegions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.datagridRegions.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.datagridRegions.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.datagridRegions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.datagridRegions.ColumnHeadersHeight = 22;
+            this.datagridRegions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.WindowFrame;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.NullValue = "Unknown Event Location";
+            dataGridViewCellStyle1.NullValue = "Unknown";
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.datagridRegions.DefaultCellStyle = dataGridViewCellStyle1;
+            this.datagridRegions.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.datagridRegions.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.datagridRegions.Location = new System.Drawing.Point(9, 267);
+            this.datagridRegions.Location = new System.Drawing.Point(10, 267);
             this.datagridRegions.Margin = new System.Windows.Forms.Padding(2);
             this.datagridRegions.Name = "datagridRegions";
             this.datagridRegions.RowTemplate.Height = 24;
+            this.datagridRegions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.datagridRegions.Size = new System.Drawing.Size(475, 218);
             this.datagridRegions.TabIndex = 9;
             this.datagridRegions.Tag = "disable";
@@ -523,7 +536,7 @@
             this.btnAddRegion.Location = new System.Drawing.Point(356, 242);
             this.btnAddRegion.Margin = new System.Windows.Forms.Padding(2);
             this.btnAddRegion.Name = "btnAddRegion";
-            this.btnAddRegion.Size = new System.Drawing.Size(128, 23);
+            this.btnAddRegion.Size = new System.Drawing.Size(129, 23);
             this.btnAddRegion.TabIndex = 8;
             this.btnAddRegion.Tag = "disable";
             this.btnAddRegion.Text = "Add Location";
@@ -534,11 +547,11 @@
             // 
             this.lblAddedLocations.AutoSize = true;
             this.lblAddedLocations.BackColor = System.Drawing.Color.Transparent;
-            this.lblAddedLocations.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblAddedLocations.Location = new System.Drawing.Point(6, 250);
+            this.lblAddedLocations.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblAddedLocations.Location = new System.Drawing.Point(5, 245);
             this.lblAddedLocations.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAddedLocations.Name = "lblAddedLocations";
-            this.lblAddedLocations.Size = new System.Drawing.Size(98, 15);
+            this.lblAddedLocations.Size = new System.Drawing.Size(122, 20);
             this.lblAddedLocations.TabIndex = 100;
             this.lblAddedLocations.Text = "Event Location(s)";
             // 
@@ -546,11 +559,11 @@
             // 
             this.lblAnnouncement.AutoSize = true;
             this.lblAnnouncement.BackColor = System.Drawing.Color.Transparent;
-            this.lblAnnouncement.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblAnnouncement.Location = new System.Drawing.Point(506, 100);
+            this.lblAnnouncement.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblAnnouncement.Location = new System.Drawing.Point(504, 95);
             this.lblAnnouncement.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAnnouncement.Name = "lblAnnouncement";
-            this.lblAnnouncement.Size = new System.Drawing.Size(114, 15);
+            this.lblAnnouncement.Size = new System.Drawing.Size(140, 20);
             this.lblAnnouncement.TabIndex = 22;
             this.lblAnnouncement.Text = "Announcement Text";
             // 
@@ -580,7 +593,7 @@
             this.comboLengthMinutes.Location = new System.Drawing.Point(395, 149);
             this.comboLengthMinutes.Margin = new System.Windows.Forms.Padding(2);
             this.comboLengthMinutes.Name = "comboLengthMinutes";
-            this.comboLengthMinutes.Size = new System.Drawing.Size(91, 29);
+            this.comboLengthMinutes.Size = new System.Drawing.Size(90, 29);
             this.comboLengthMinutes.TabIndex = 5;
             this.comboLengthMinutes.Tag = "disable";
             // 
@@ -588,13 +601,13 @@
             // 
             this.lblValidMinutes.AutoSize = true;
             this.lblValidMinutes.BackColor = System.Drawing.Color.Transparent;
-            this.lblValidMinutes.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblValidMinutes.Location = new System.Drawing.Point(393, 132);
+            this.lblValidMinutes.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblValidMinutes.Location = new System.Drawing.Point(391, 127);
             this.lblValidMinutes.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblValidMinutes.Name = "lblValidMinutes";
-            this.lblValidMinutes.Size = new System.Drawing.Size(105, 15);
+            this.lblValidMinutes.Size = new System.Drawing.Size(90, 20);
             this.lblValidMinutes.TabIndex = 100;
-            this.lblValidMinutes.Text = "Purge in (minutes)";
+            this.lblValidMinutes.Text = "Purge in (m)";
             // 
             // txtOutputFile
             // 
@@ -633,7 +646,7 @@
             this.lblOutput.AutoSize = true;
             this.lblOutput.BackColor = System.Drawing.Color.Transparent;
             this.lblOutput.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblOutput.Location = new System.Drawing.Point(505, 414);
+            this.lblOutput.Location = new System.Drawing.Point(504, 416);
             this.lblOutput.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblOutput.Name = "lblOutput";
             this.lblOutput.Size = new System.Drawing.Size(160, 20);
@@ -647,14 +660,14 @@
             this.btnAbout.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnAbout.FlatAppearance.BorderSize = 0;
             this.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.btnAbout.Location = new System.Drawing.Point(962, 6);
             this.btnAbout.Margin = new System.Windows.Forms.Padding(2);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(147, 36);
             this.btnAbout.TabIndex = 18;
             this.btnAbout.Tag = "disable";
-            this.btnAbout.Text = "Open Fusion Settings";
+            this.btnAbout.Text = "Settings";
             this.btnAbout.UseVisualStyleBackColor = false;
             this.btnAbout.Click += new System.EventHandler(this.Button1_Click_1);
             // 
@@ -665,14 +678,14 @@
             this.btnTTSSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnTTSSettings.FlatAppearance.BorderSize = 0;
             this.btnTTSSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTTSSettings.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnTTSSettings.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.btnTTSSettings.Location = new System.Drawing.Point(962, 46);
             this.btnTTSSettings.Margin = new System.Windows.Forms.Padding(2);
             this.btnTTSSettings.Name = "btnTTSSettings";
             this.btnTTSSettings.Size = new System.Drawing.Size(147, 36);
             this.btnTTSSettings.TabIndex = 19;
             this.btnTTSSettings.Tag = "disable";
-            this.btnTTSSettings.Text = "Open TTS Settings";
+            this.btnTTSSettings.Text = "TTS Applet";
             this.btnTTSSettings.UseVisualStyleBackColor = false;
             this.btnTTSSettings.Click += new System.EventHandler(this.BtnTTSSettings_Click);
             // 
@@ -681,10 +694,10 @@
             this.lblGeneratedHeader.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblGeneratedHeader.AutoSize = true;
             this.lblGeneratedHeader.BackColor = System.Drawing.Color.Transparent;
-            this.lblGeneratedHeader.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblGeneratedHeader.Location = new System.Drawing.Point(6, 506);
+            this.lblGeneratedHeader.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblGeneratedHeader.Location = new System.Drawing.Point(5, 506);
             this.lblGeneratedHeader.Name = "lblGeneratedHeader";
-            this.lblGeneratedHeader.Size = new System.Drawing.Size(309, 15);
+            this.lblGeneratedHeader.Size = new System.Drawing.Size(329, 15);
             this.lblGeneratedHeader.TabIndex = 100;
             this.lblGeneratedHeader.Text = "Generated Message Header Data (only generates on save)";
             // 
@@ -698,7 +711,7 @@
             this.txtGeneratedData.Location = new System.Drawing.Point(10, 524);
             this.txtGeneratedData.Name = "txtGeneratedData";
             this.txtGeneratedData.ReadOnly = true;
-            this.txtGeneratedData.Size = new System.Drawing.Size(449, 22);
+            this.txtGeneratedData.Size = new System.Drawing.Size(448, 22);
             this.txtGeneratedData.TabIndex = 11;
             this.txtGeneratedData.TextChanged += new System.EventHandler(this.TxtGeneratedData_TextChanged);
             // 
@@ -727,7 +740,7 @@
             this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblVersion.ForeColor = System.Drawing.Color.Magenta;
+            this.lblVersion.ForeColor = System.Drawing.Color.White;
             this.lblVersion.Location = new System.Drawing.Point(921, 453);
             this.lblVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblVersion.Name = "lblVersion";
@@ -765,7 +778,7 @@
             this.btnCopyHeader.FlatAppearance.BorderSize = 0;
             this.btnCopyHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCopyHeader.Font = new System.Drawing.Font("Segoe MDL2 Assets", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCopyHeader.Location = new System.Drawing.Point(464, 524);
+            this.btnCopyHeader.Location = new System.Drawing.Point(463, 524);
             this.btnCopyHeader.Margin = new System.Windows.Forms.Padding(2);
             this.btnCopyHeader.Name = "btnCopyHeader";
             this.btnCopyHeader.Size = new System.Drawing.Size(22, 22);
@@ -823,7 +836,7 @@
             this.lblOutputDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblOutputDirectory.BackColor = System.Drawing.Color.Transparent;
             this.lblOutputDirectory.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblOutputDirectory.Location = new System.Drawing.Point(506, 436);
+            this.lblOutputDirectory.Location = new System.Drawing.Point(505, 436);
             this.lblOutputDirectory.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblOutputDirectory.Name = "lblOutputDirectory";
             this.lblOutputDirectory.Size = new System.Drawing.Size(293, 60);
@@ -839,10 +852,10 @@
             this.chkCensorTone.Location = new System.Drawing.Point(508, 69);
             this.chkCensorTone.Margin = new System.Windows.Forms.Padding(2);
             this.chkCensorTone.Name = "chkCensorTone";
-            this.chkCensorTone.Size = new System.Drawing.Size(203, 24);
+            this.chkCensorTone.Size = new System.Drawing.Size(201, 24);
             this.chkCensorTone.TabIndex = 111;
             this.chkCensorTone.Tag = "disable";
-            this.chkCensorTone.Text = "Use BEEP Attention Tone";
+            this.chkCensorTone.Text = "Use BNU Attention Tone";
             this.chkCensorTone.UseVisualStyleBackColor = false;
             // 
             // btnRandomID
@@ -852,7 +865,7 @@
             this.btnRandomID.FlatAppearance.BorderSize = 0;
             this.btnRandomID.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRandomID.Font = new System.Drawing.Font("Segoe MDL2 Assets", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRandomID.Location = new System.Drawing.Point(457, 29);
+            this.btnRandomID.Location = new System.Drawing.Point(456, 29);
             this.btnRandomID.Margin = new System.Windows.Forms.Padding(2);
             this.btnRandomID.Name = "btnRandomID";
             this.btnRandomID.Size = new System.Drawing.Size(29, 29);
@@ -868,12 +881,94 @@
             this.Randomization.Interval = 50;
             this.Randomization.Tick += new System.EventHandler(this.Randomization_Tick);
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.BackColor = System.Drawing.Color.BlueViolet;
+            this.button1.Location = new System.Drawing.Point(508, 467);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 114;
+            this.button1.Text = "Light";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click_2);
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button2.BackColor = System.Drawing.Color.BlueViolet;
+            this.button2.Location = new System.Drawing.Point(589, 467);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 115;
+            this.button2.Text = "Dark";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button3.BackColor = System.Drawing.Color.BlueViolet;
+            this.button3.Location = new System.Drawing.Point(670, 496);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 116;
+            this.button3.Text = "Blue";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // chkSimulateENDEC
+            // 
+            this.chkSimulateENDEC.AutoSize = true;
+            this.chkSimulateENDEC.BackColor = System.Drawing.Color.Transparent;
+            this.chkSimulateENDEC.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.chkSimulateENDEC.Location = new System.Drawing.Point(730, 69);
+            this.chkSimulateENDEC.Margin = new System.Windows.Forms.Padding(2);
+            this.chkSimulateENDEC.Name = "chkSimulateENDEC";
+            this.chkSimulateENDEC.Size = new System.Drawing.Size(202, 24);
+            this.chkSimulateENDEC.TabIndex = 117;
+            this.chkSimulateENDEC.Tag = "disable";
+            this.chkSimulateENDEC.Text = "Simulate ENDEC Headers";
+            this.chkSimulateENDEC.UseVisualStyleBackColor = false;
+            // 
+            // button4
+            // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button4.BackColor = System.Drawing.Color.BlueViolet;
+            this.button4.Location = new System.Drawing.Point(508, 496);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 118;
+            this.button4.Text = "Red";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button5.BackColor = System.Drawing.Color.BlueViolet;
+            this.button5.Location = new System.Drawing.Point(589, 496);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 119;
+            this.button5.Text = "Green";
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1120, 561);
+            this.Controls.Add(this.lblValidMinutes);
+            this.Controls.Add(this.lblValidHours);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.chkSimulateENDEC);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnRandomID);
             this.Controls.Add(this.chkCensorTone);
             this.Controls.Add(this.chkGenerateAnnouncement);
@@ -888,7 +983,6 @@
             this.Controls.Add(this.lblOutput);
             this.Controls.Add(this.lblFileName);
             this.Controls.Add(this.txtOutputFile);
-            this.Controls.Add(this.lblValidMinutes);
             this.Controls.Add(this.comboLengthMinutes);
             this.Controls.Add(this.comboLengthHour);
             this.Controls.Add(this.lblAnnouncement);
@@ -902,7 +996,6 @@
             this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.lblSender);
             this.Controls.Add(this.txtSender);
-            this.Controls.Add(this.lblValidHours);
             this.Controls.Add(this.lblEventBegin);
             this.Controls.Add(this.dateStart);
             this.Controls.Add(this.lblOriginator);
@@ -915,6 +1008,7 @@
             this.Controls.Add(this.comboState);
             this.Controls.Add(this.lblOutputDirectory);
             this.DoubleBuffered = true;
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -947,11 +1041,11 @@
         private System.Windows.Forms.Label lblValidHours;
         private System.Windows.Forms.TextBox txtSender;
         private System.Windows.Forms.Label lblSender;
-        private System.Windows.Forms.Button btnGenerate;
+        private SpecialButton btnGenerate;
         private System.Windows.Forms.CheckBox chkEbsTones;
         private System.Windows.Forms.CheckBox chkNwsTone;
         private System.Windows.Forms.TextBox txtAnnouncement;
-        private System.Windows.Forms.Button btnGeneratePlay;
+        private SpecialButton btnGeneratePlay;
         private System.Windows.Forms.DataGridView datagridRegions;
         private System.Windows.Forms.Button btnAddRegion;
         private System.Windows.Forms.Label lblAddedLocations;
@@ -994,6 +1088,12 @@
         private System.Windows.Forms.CheckBox chkCensorTone;
         private System.Windows.Forms.Button btnRandomID;
         private System.Windows.Forms.Timer Randomization;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.CheckBox chkSimulateENDEC;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }
 

@@ -36,5 +36,11 @@ namespace EASEncoder_UI
         {
             CloseThisWindow.Interval = 5;
         }
+
+        private void FusionPopup_Load(object sender, EventArgs e)
+        {
+            AllowExit = Properties.Settings.Default.NoSplash;
+            this.Close();
+        }
     }
 }

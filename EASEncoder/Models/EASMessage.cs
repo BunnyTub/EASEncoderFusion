@@ -10,7 +10,7 @@ namespace EASEncoder.Models
         public static List<SAMECounty> Counties = new List<SAMECounty>
         {
             //National - 00
-            new SAMECounty(000, "United States", new SAMEState(00, "All of United States")),
+            new SAMECounty(000, "International", new SAMEState(00, "International")),
 
             //Mock - 999
             //new SAMECounty(999, "Mock State", new SAMEState(999, "Mock State")),
@@ -22,7 +22,7 @@ namespace EASEncoder.Models
             new SAMECounty(5, "Sussex", new SAMEState(10, "Delaware")),
 
             //District of Columbia - 11
-            new SAMECounty(1, "District of Columbia", new SAMEState(11, "District of Columbia")),
+            new SAMECounty(1, "All of Columbia", new SAMEState(11, "District of Columbia")),
 
             //Florida - 12
             new SAMECounty(000, "All of Florida", new SAMEState(12, "Florida")),
@@ -2985,7 +2985,7 @@ namespace EASEncoder.Models
             new SAMECounty(50, "Western District", new SAMEState(60, "American Samoa")),
 
             //GU - 66
-            new SAMECounty(10, "Guam", new SAMEState(66, "Guam")),
+            new SAMECounty(10, "All of Guam", new SAMEState(66, "Guam")),
 
             //MP - 69
             new SAMECounty(000, "All of Northern Mariana Islands", new SAMEState(69, "Northern Mariana Islands")),
@@ -3515,142 +3515,123 @@ namespace EASEncoder.Models
         public static List<SAMEMessageAlertCode> AlertCodes = new List<SAMEMessageAlertCode>
         {
             // Custom alert codes.
-            new SAMEMessageAlertCode("THW", "Thug Shaker Warning", false),
-            new SAMEMessageAlertCode("THA", "Thug Shaker Watch", false),
-            new SAMEMessageAlertCode("XTR", "Xtreme Weather Warning", false),
+            new SAMEMessageAlertCode("THW", "Thug Shaker Warning", SAMEMessageAlertCode.SevereType.Warning, false),
+            new SAMEMessageAlertCode("THA", "Thug Shaker Watch", SAMEMessageAlertCode.SevereType.Watch, false),
+            new SAMEMessageAlertCode("XTR", "Xtreme Weather Warning", SAMEMessageAlertCode.SevereType.Warning, false),
 
             // Used in the EBS (Emergency Broadcast System). Should not be broadcasted or used anymore.
-            new SAMEMessageAlertCode("EAN", "Emergency Action Notification"),
-            new SAMEMessageAlertCode("EAT", "Emergency Action Termination"),
+            new SAMEMessageAlertCode("EAN", "National Emergency Message", SAMEMessageAlertCode.SevereType.Emergency),
+            new SAMEMessageAlertCode("EAT", "National Emergency Message Cancellation", SAMEMessageAlertCode.SevereType.Advisory),
             
             // These are national alert codes.
-            new SAMEMessageAlertCode("NIC", "National Information Center"),
-            new SAMEMessageAlertCode("NPT", "National Periodic Test"),
-            new SAMEMessageAlertCode("NAT", "National Audible Test"),
-            new SAMEMessageAlertCode("NST", "National Slient Test"),
+            new SAMEMessageAlertCode("NIC", "National Information Center", SAMEMessageAlertCode.SevereType.Advisory),
+            new SAMEMessageAlertCode("NPT", "National Periodic Test", SAMEMessageAlertCode.SevereType.Test),
+            new SAMEMessageAlertCode("NAT", "National Audible Test", SAMEMessageAlertCode.SevereType.Test),
+            new SAMEMessageAlertCode("NST", "National Slient Test", SAMEMessageAlertCode.SevereType.Test),
 
             // These are required tests.
-            new SAMEMessageAlertCode("RMT", "Required Monthly Test"),
-            new SAMEMessageAlertCode("RWT", "Required Weekly Test"),
+            new SAMEMessageAlertCode("RMT", "Required Monthly Test", SAMEMessageAlertCode.SevereType.Test),
+            new SAMEMessageAlertCode("RWT", "Required Weekly Test", SAMEMessageAlertCode.SevereType.Test),
 
             // These are required tests. (unofficial - most likely will be recognized as "Unrecognized Message")
             //new SAMEMessageAlertCode("RDT", "Required Daily Test"),
             //new SAMEMessageAlertCode("RYT", "Required Yearly Test"),
 
             // These are administratives codes.
-            new SAMEMessageAlertCode("ADR", "Administrative Message"),
+            new SAMEMessageAlertCode("ADR", "Administrative Message", SAMEMessageAlertCode.SevereType.Advisory),
 
             // These are other codes.
-            new SAMEMessageAlertCode("AVW", "Avalanche Warning"),
-            new SAMEMessageAlertCode("AVA", "Avalanche Watch"),
-            new SAMEMessageAlertCode("BLU", "Blue Alert"),
-            new SAMEMessageAlertCode("BHW", "Biological Hazard Warning"),
-            new SAMEMessageAlertCode("BZW", "Blizzard Warning"),
-            new SAMEMessageAlertCode("BWW", "Boil Water Warning"),
-            new SAMEMessageAlertCode("CAE", "Child Abduction Emergency"),
-            new SAMEMessageAlertCode("CDW", "Civil Danger Warning"),
-            new SAMEMessageAlertCode("CEM", "Civil Emergency Message"),
-            new SAMEMessageAlertCode("CFW", "Coastal Flood Warning"),
-            new SAMEMessageAlertCode("CFA", "Coastal Flood Watch"),
-            new SAMEMessageAlertCode("CHW", "Chemical Hazard Warning"),
-            new SAMEMessageAlertCode("DEW", "Contagious Disease Warning"),
-            new SAMEMessageAlertCode("CWW", "Contaminated Water Warning"),
-            new SAMEMessageAlertCode("DBA", "Dam Watch"),
-            new SAMEMessageAlertCode("DBW", "Dam Break Warning"),
-            new SAMEMessageAlertCode("DSW", "Dust Storm Warning"),
-            new SAMEMessageAlertCode("EQW", "Earthquake Warning"),
-            new SAMEMessageAlertCode("EVA", "Evacuation Watch"),
-            new SAMEMessageAlertCode("EVI", "Evacuation Immediate"),
-            new SAMEMessageAlertCode("EWW", "Extreme Wind Warning"),
-            new SAMEMessageAlertCode("FCW", "Food Contamination Warning"),
-            new SAMEMessageAlertCode("FRW", "Fire Warning"),
-            new SAMEMessageAlertCode("FFW", "Flash Flood Warning"),
-            new SAMEMessageAlertCode("FFA", "Flash Flood Watch"),
-            new SAMEMessageAlertCode("FFS", "Flash Flood Statement"),
-            new SAMEMessageAlertCode("FLW", "Flood Warning"),
-            new SAMEMessageAlertCode("FLA", "Flood Watch"),
-            new SAMEMessageAlertCode("FLS", "Flood Statement"),
-            new SAMEMessageAlertCode("FSW", "Flash Freeze Warning"),
-            new SAMEMessageAlertCode("FZW", "Freeze Warning"),
-            new SAMEMessageAlertCode("HMW", "Hazardous Materials Warning"),
-            new SAMEMessageAlertCode("HWW", "High Wind Warning"),
-            new SAMEMessageAlertCode("HWA", "High Wind Watch"),
-            new SAMEMessageAlertCode("HUW", "Hurricane Warning"),
-            new SAMEMessageAlertCode("HUA", "Hurricane Watch"),
-            new SAMEMessageAlertCode("HLS", "Hurricane Statement"),
-            new SAMEMessageAlertCode("IBW", "Iceberg Warning"),
-            new SAMEMessageAlertCode("IFW", "Industrial Fire Warning"),
-            new SAMEMessageAlertCode("LEW", "Law Enforcement Warning"),
-            new SAMEMessageAlertCode("LSW", "Landslide Warning"),
-            new SAMEMessageAlertCode("LAE", "Local Area Emergency"),
-            new SAMEMessageAlertCode("NMN", "Network Message Notification"),
-            new SAMEMessageAlertCode("TOE", "911 Telephone Outage Emergency"),
-            new SAMEMessageAlertCode("NUW", "Nuclear Power Plant Warning"),
-            new SAMEMessageAlertCode("DMO", "Practice/Demo Warning"),
-            new SAMEMessageAlertCode("POS", "Power Outage Statement"),
-            new SAMEMessageAlertCode("RHW", "Radiological Hazard Warning"),
-            new SAMEMessageAlertCode("SVR", "Severe Thunderstorm Warning"),
-            new SAMEMessageAlertCode("SVA", "Severe Thunderstorm Watch"),
-            new SAMEMessageAlertCode("SVS", "Severe Weather Statement"),
-            new SAMEMessageAlertCode("SPW", "Shelter in Place Warning"),
-            new SAMEMessageAlertCode("SMW", "Special Marine Warning"),
-            new SAMEMessageAlertCode("SPS", "Special Weather Statement"),
-            new SAMEMessageAlertCode("SQW", "Snow Squall Warning"),
-            new SAMEMessageAlertCode("SSW", "Storm Surge Warning"),
-            new SAMEMessageAlertCode("SSA", "Storm Surge Watch"),
-            new SAMEMessageAlertCode("TOR", "Tornado Warning"),
-            new SAMEMessageAlertCode("TOA", "Tornado Watch"),
-            new SAMEMessageAlertCode("TRW", "Tropical Storm Warning"),
-            new SAMEMessageAlertCode("TRA", "Tropical Storm Watch"),
-            new SAMEMessageAlertCode("TSW", "Tsunami Warning"),
-            new SAMEMessageAlertCode("TSA", "Tsunami Watch"),
-            new SAMEMessageAlertCode("VOW", "Volcano Warning"),
-            new SAMEMessageAlertCode("WSW", "Winter Storm Warning"),
-            new SAMEMessageAlertCode("WSA", "Winter Storm Watch"),
-            new SAMEMessageAlertCode("WFW", "Wild Fire Warning"),
-            new SAMEMessageAlertCode("WFA", "Wild Fire Watch"),
+            new SAMEMessageAlertCode("AVW", "Avalanche Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("AVA", "Avalanche Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("BLU", "Blue Alert", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("BHW", "Biological Hazard Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("BZW", "Blizzard Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("BWW", "Boil Water Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("CAE", "Child Abduction Emergency", SAMEMessageAlertCode.SevereType.Emergency),
+            new SAMEMessageAlertCode("CDW", "Civil Danger Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("CEM", "Civil Emergency Message", SAMEMessageAlertCode.SevereType.Emergency),
+            new SAMEMessageAlertCode("CFW", "Coastal Flood Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("CFA", "Coastal Flood Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("CHW", "Chemical Hazard Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("DEW", "Contagious Disease Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("CWW", "Contaminated Water Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("DBA", "Dam Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("DBW", "Dam Break Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("DSW", "Dust Storm Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("EQW", "Earthquake Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("EVA", "Evacuation Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("EVI", "Evacuation Immediate", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("EWW", "Extreme Wind Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("FCW", "Food Contamination Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("FRW", "Fire Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("FFW", "Flash Flood Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("FFA", "Flash Flood Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("FFS", "Flash Flood Statement", SAMEMessageAlertCode.SevereType.Statement),
+            new SAMEMessageAlertCode("FLW", "Flood Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("FLA", "Flood Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("FLS", "Flood Statement", SAMEMessageAlertCode.SevereType.Statement),
+            new SAMEMessageAlertCode("FSW", "Flash Freeze Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("FZW", "Freeze Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("HMW", "Hazardous Materials Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("HWW", "High Wind Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("HWA", "High Wind Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("HUW", "Hurricane Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("HUA", "Hurricane Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("HLS", "Hurricane Statement", SAMEMessageAlertCode.SevereType.Statement),
+            new SAMEMessageAlertCode("IBW", "Iceberg Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("IFW", "Industrial Fire Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("LEW", "Law Enforcement Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("LSW", "Landslide Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("LAE", "Local Area Emergency", SAMEMessageAlertCode.SevereType.Emergency),
+            new SAMEMessageAlertCode("NMN", "Network Message Notification", SAMEMessageAlertCode.SevereType.Advisory),
+            new SAMEMessageAlertCode("TOE", "911 Telephone Outage Emergency", SAMEMessageAlertCode.SevereType.Emergency),
+            new SAMEMessageAlertCode("NUW", "Nuclear Power Plant Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("DMO", "Practice/Demo Warning", SAMEMessageAlertCode.SevereType.Test),
+            new SAMEMessageAlertCode("POS", "Power Outage Statement", SAMEMessageAlertCode.SevereType.Statement),
+            new SAMEMessageAlertCode("RHW", "Radiological Hazard Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("SVR", "Severe Thunderstorm Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("SVA", "Severe Thunderstorm Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("SVS", "Severe Weather Statement", SAMEMessageAlertCode.SevereType.Statement),
+            new SAMEMessageAlertCode("SPW", "Shelter in Place Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("SMW", "Special Marine Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("SPS", "Special Weather Statement", SAMEMessageAlertCode.SevereType.Statement),
+            new SAMEMessageAlertCode("SQW", "Snow Squall Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("SSW", "Storm Surge Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("SSA", "Storm Surge Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("TOR", "Tornado Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("TOA", "Tornado Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("TRW", "Tropical Storm Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("TRA", "Tropical Storm Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("TSW", "Tsunami Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("TSA", "Tsunami Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("VOW", "Volcano Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("WSW", "Winter Storm Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("WSA", "Winter Storm Watch", SAMEMessageAlertCode.SevereType.Watch),
+            new SAMEMessageAlertCode("WFW", "Wild Fire Warning", SAMEMessageAlertCode.SevereType.Warning),
+            new SAMEMessageAlertCode("WFA", "Wild Fire Watch", SAMEMessageAlertCode.SevereType.Watch),
 
             // Usually used internally. Sometimes used by NOAA stations to indicate transmitter outages.
 
-            new SAMEMessageAlertCode("TXP", "Transmitter Primary On"),
-            new SAMEMessageAlertCode("TXB", "Transmitter Backup On"),
-            new SAMEMessageAlertCode("TXO", "Transmitter Carrier On"),
-            new SAMEMessageAlertCode("TXF", "Transmitter Carrier Off"),
+            new SAMEMessageAlertCode("TXP", "Transmitter Primary On", SAMEMessageAlertCode.SevereType.Advisory),
+            new SAMEMessageAlertCode("TXB", "Transmitter Backup On", SAMEMessageAlertCode.SevereType.Advisory),
+            new SAMEMessageAlertCode("TXO", "Transmitter Carrier On", SAMEMessageAlertCode.SevereType.Advisory),
+            new SAMEMessageAlertCode("TXF", "Transmitter Carrier Off", SAMEMessageAlertCode.SevereType.Advisory),
 
             // Some weather radios may use the end of the alert code to try and filter the type of alert it is. For example, if a Squall Warning (SQW) is issued, and the weather radio doesn't know what an SQW is, it will use the end of the code, W (Warning).
             // This also works for bad signals.
 
-            new SAMEMessageAlertCode("11E", "Unrecognized Emergency (**E)"),
-            new SAMEMessageAlertCode("11W", "Unrecognized Warning (**W)"),
-            new SAMEMessageAlertCode("11A", "Unrecognized Watch (**A)"),
-            new SAMEMessageAlertCode("11S", "Unrecognized Statement (**S)"),
-            new SAMEMessageAlertCode("111", "Unrecognized Message (***)"),
-
-            //new SAMEMessageAlertCode("CPS", "[CAN] Canadian Public Safety Alert"),
-            //new SAMEMessageAlertCode("CNS", "[CAN] Canadian National Security Message"),
-            //new SAMEMessageAlertCode("CTM", "[CAN] Canadian Test Message"),
-            //// Mexico
-            //new SAMEMessageAlertCode("CAM", "[MEX] Mexican Amber Alert"),
-            //new SAMEMessageAlertCode("CTE", "[MEX] Mexican Test Emergency"),
-            //new SAMEMessageAlertCode("CMP", "[MEX] Mexican Civil Protection"),
-            //new SAMEMessageAlertCode("CNP", "[MEX] Mexican National Security"),
-            //new SAMEMessageAlertCode("CES", "[MEX] Mexican Earthquake and Tsunami"),
-            //new SAMEMessageAlertCode("CFZ", "[MEX] Mexican Flood Zone"),
-            //new SAMEMessageAlertCode("CCA", "[MEX] Mexican Chemical and Nuclear Accident"),
-            //new SAMEMessageAlertCode("CSW", "[MEX] Mexican Severe Weather"),
-            //new SAMEMessageAlertCode("CVW", "[MEX] Mexican Volcano Warning"),
-            //new SAMEMessageAlertCode("CDD", "[MEX] Mexican Drought"),
-            //new SAMEMessageAlertCode("CVE", "[MEX] Mexican Evacuation"),
-            //new SAMEMessageAlertCode("CBI", "[MEX] Mexican Biological Incident"),
-            //new SAMEMessageAlertCode("CET", "[MEX] Mexican Earthquake and Tsunami Test"),
-            //new SAMEMessageAlertCode("CFA", "[MEX] Mexican Fire Alert"),
+            new SAMEMessageAlertCode("11E", "Unrecognized Emergency (**E)", SAMEMessageAlertCode.SevereType.Emergency, false),
+            new SAMEMessageAlertCode("11W", "Unrecognized Warning (**W)", SAMEMessageAlertCode.SevereType.Warning, false),
+            new SAMEMessageAlertCode("11A", "Unrecognized Watch (**A)", SAMEMessageAlertCode.SevereType.Watch, false),
+            new SAMEMessageAlertCode("11S", "Unrecognized Statement (**S)", SAMEMessageAlertCode.SevereType.Statement, false),
+            new SAMEMessageAlertCode("111", "Unrecognized Message (***)", SAMEMessageAlertCode.SevereType.Statement, false),
         };
     }
 
     public class EASMessage
     {
-        private static readonly string Preamble = "\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab";
-        private static readonly string MockPreamble = "\xa1\xa1\xa1\xa1\xa1\xa1\xa1\xa1\xa1\xa1\xa1\xa1\xa1\xa1\xa1\xa1";
+        private static readonly string Preamble = "\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB";
+        private static readonly string MockPreamble = "\xA1\xA1\xA1\xA1\xA1\xA1\xA1\xA1\xA1\xA1\xA1\xA1\xA1\xA1\xA1\xA1";
 
         private readonly string _code;
         private readonly string _length;
@@ -3690,9 +3671,13 @@ namespace EASEncoder.Models
             return String;
         }
 
-        internal string ToSameEndOfMessageString() { return $"{Preamble}{"NNNN"}"; }
+        internal string ToSameEndOfMessageString(bool simulateENDEC)
+        {
+            if (simulateENDEC) return $"\x00{Preamble}{"NNNN"}\x00\x00";
+            else return $"{Preamble}{"NNNN"}";
+        }
 
-        internal string ToSameHeaderString()
+        internal string ToSameHeaderString(bool simulateENDEC)
         {
             var headerRegions = _regions.Aggregate(string.Empty,
                 (current, thisRegion) =>
@@ -3702,27 +3687,56 @@ namespace EASEncoder.Models
 
             if (_originator == "MCK")
             {
-                return $"0{MockPreamble}" +
-                   $"{"YXYX"}-" +
-                   $"MCK-" +
-                   $"{_code}-" +
-                   $"{headerRegions}+" +
-                   $"{_length}-" +
-                   $"{ZeroPad(_start.DayOfYear.ToString(), 3)}" +
-                   $"{ZeroPad(_start.Hour.ToString(), 2)}" +
-                   $"{ZeroPad(_start.Minute.ToString(), 2)}-" +
-                   $"{_sender}-";
+                if (simulateENDEC)
+                    return $"\x00" +
+                        $"0{MockPreamble}" +
+                        $"{"YXYX"}-" +
+                        $"MCK-" +
+                        $"{_code}-" +
+                        $"{headerRegions}+" +
+                       $"{_length}-" +
+                       $"{ZeroPad(_start.DayOfYear.ToString(), 3)}" +
+                        $"{ZeroPad(_start.Hour.ToString(), 2)}" +
+                        $"{ZeroPad(_start.Minute.ToString(), 2)}-" +
+                        $"{_sender}-\x00\x00";
+                else
+                    return $"0{MockPreamble}" +
+                        $"{"YXYX"}-" +
+                        $"MCK-" +
+                        $"{_code}-" +
+                        $"{headerRegions}+" +
+                        $"{_length}-" +
+                        $"{ZeroPad(_start.DayOfYear.ToString(), 3)}" +
+                        $"{ZeroPad(_start.Hour.ToString(), 2)}" +
+                        $"{ZeroPad(_start.Minute.ToString(), 2)}-" +
+                        $"{_sender}-";
             }
-            else return $"{Preamble}" +
-                   $"{"ZCZC"}-" +
-                   $"{_originator}-" +
-                   $"{_code}-" +
-                   $"{headerRegions}+" +
-                   $"{_length}-" +
-                   $"{ZeroPad(_start.DayOfYear.ToString(), 3)}" +
-                   $"{ZeroPad(_start.Hour.ToString(), 2)}" +
-                   $"{ZeroPad(_start.Minute.ToString(), 2)}-" +
-                   $"{_sender}-";
+            else
+            {
+                if (simulateENDEC)
+                    return $"\x00" +
+                        $"{Preamble}" +
+                        $"{"ZCZC"}-" +
+                        $"{_originator}-" +
+                        $"{_code}-" +
+                        $"{headerRegions}+" +
+                       $"{_length}-" +
+                       $"{ZeroPad(_start.DayOfYear.ToString(), 3)}" +
+                        $"{ZeroPad(_start.Hour.ToString(), 2)}" +
+                        $"{ZeroPad(_start.Minute.ToString(), 2)}-" +
+                        $"{_sender}-\x00\x00";
+                else
+                    return $"{Preamble}" +
+                        $"{"ZCZC"}-" +
+                        $"{_originator}-" +
+                        $"{_code}-" +
+                        $"{headerRegions}+" +
+                        $"{_length}-" +
+                        $"{ZeroPad(_start.DayOfYear.ToString(), 3)}" +
+                        $"{ZeroPad(_start.Hour.ToString(), 2)}" +
+                        $"{ZeroPad(_start.Minute.ToString(), 2)}-" +
+                        $"{_sender}-";
+            }
         }
     }
 }

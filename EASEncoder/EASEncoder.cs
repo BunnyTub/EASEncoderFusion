@@ -14,6 +14,7 @@ namespace EASEncoderFusion
     {
         private static readonly SAMEAudioBit Mark = new SAMEAudioBit(2083, (decimal)0.00192);
         private static readonly SAMEAudioBit Space = new SAMEAudioBit(1563, (decimal)0.00192);
+
         private static int[] _headerSamples;
         private static int TotalHeaderSamples => _headerSamples.Length;
         private static List<int> _silenceSamples;
@@ -39,19 +40,39 @@ namespace EASEncoderFusion
 
         private static readonly Dictionary<decimal, List<int>> headerByteCache = new Dictionary<decimal, List<int>>();
 
-        public static void CreateNewMessageFromRawData(string message, bool ebsTone = true, bool nwsTone = false, bool censorTone = false, string announcement = "", string filename = "output")
+        internal static string ZeroPad(string String, int Length)
+        {
+            if (string.IsNullOrEmpty(String))
+            {
+                String = "0";
+            }
+            if (String.Length > Length)
+            {
+                return String;
+            }
+
+            while (String.Length < Length)
+            {
+                String = "0" + String;
+            }
+
+            return String;
+        }
+
+        // Save new message from raw string
+        public static void CreateNewMessageFromRawData(string message, bool ebsTone = false, bool nwsTone = false, bool censorTone = false, string announcement = "", string filename = "output")
         {
             // These two strings are VERY important and altering them will cause any listening radios to malfunction or not respond to the EAS message.
             // Do not alter these strings!
-            string Preamble = "\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab";
-            string EOM = "\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xabNNNN";
+            string Preamble = "\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB";
+            string EOM = "\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xABNNNN";
             _useEbsTone = ebsTone;
             _useNwsTone = nwsTone;
             _useCensorTone = censorTone;
             _announcement = announcement;
 
             _headerSamples = new int[0];
-            var byteArray = Encoding.Default.GetBytes($"{Preamble}ZCZC-{message}");
+            var byteArray = Encoding.GetEncoding("ISO-8859-1").GetBytes($"{Preamble}ZCZC-{message}");
             var volume = 5000;
 
             var byteSpec = new List<SameWavBit>();
@@ -64,7 +85,7 @@ namespace EASEncoderFusion
 
                 for (var e = 0; e < 8; e++)
                 {
-                    thisBit = ((thisByte & (short)Math.Pow(2, e)) != 0 ? Mark : Space);
+                    thisBit = (thisByte & (short)Math.Pow(2, e)) != 0 ? Mark : Space;
                     byteSpec.Add(new SameWavBit(thisBit.frequency, thisBit.length, volume));
                 }
             }
@@ -80,7 +101,7 @@ namespace EASEncoderFusion
             }
 
             _eomSamples = new int[0];
-            byteArray = Encoding.Default.GetBytes($"{EOM}");
+            byteArray = Encoding.GetEncoding("ISO-8859-1").GetBytes($"{EOM}");
             volume = 5000;
 
             byteSpec = new List<SameWavBit>();
@@ -132,11 +153,12 @@ namespace EASEncoderFusion
         }
 
         // Save new message
-        public static string CreateNewMessage(EASMessage message, bool ebsTone = true, bool nwsTone = false, bool censorTone = false, string announcement = "", bool burst = false, string filename = "output")
+        public static string CreateNewMessage(EASMessage message, bool ebsTone = false, bool nwsTone = false, bool censorTone = false, string announcement = "", bool simulateENDEC = false, string filename = "output")
         {
             // These two strings are VERY important and altering them will cause any listening radios to malfunction or not respond to the EAS message.
             // Do not alter these strings!
-            string EOM = "\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xabNNNN";
+            string EOM = "\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xABNNNN";
+            string ENDEC_EOM = "\x00\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xABNNNN\x00\x00";
             _useEbsTone = ebsTone;
             _useNwsTone = nwsTone;
             _useCensorTone = censorTone;
@@ -145,10 +167,10 @@ namespace EASEncoderFusion
 
             _headerSamples = new int[0];
 
-            Byte[] byteArray;
+            byte[] byteArray;
             var volume = 5000;
 
-            byteArray = Encoding.Default.GetBytes(message.ToSameHeaderString());
+            byteArray = Encoding.GetEncoding("ISO-8859-1").GetBytes(message.ToSameHeaderString(simulateENDEC));
 
             var byteSpec = new List<SameWavBit>();
             byte thisByte;
@@ -177,7 +199,8 @@ namespace EASEncoderFusion
 
             // END OF MESSAGE ----------------------------------------------------------------------------------------
             _eomSamples = new int[0];
-            byteArray = Encoding.Default.GetBytes(EOM);
+            if (simulateENDEC) byteArray = Encoding.GetEncoding("ISO-8859-1").GetBytes(ENDEC_EOM);
+            else byteArray = Encoding.GetEncoding("ISO-8859-1").GetBytes(EOM);
             volume = 5000;
 
             byteSpec = new List<SameWavBit>();
@@ -188,7 +211,7 @@ namespace EASEncoderFusion
 
                 for (var e = 0; e < 8; e++)
                 {
-                    thisBit = ((thisByte & (short)Math.Pow(2, e)) != 0 ? Mark : Space);
+                    thisBit = (thisByte & (short)Math.Pow(2, e)) != 0 ? Mark : Space;
                     byteSpec.Add(new SameWavBit(thisBit.frequency, thisBit.length, volume));
                 }
             }
@@ -227,26 +250,7 @@ namespace EASEncoderFusion
 
             GenerateWavFile(filename);
 
-            return message.ToSameHeaderString();
-        }
-
-        internal static string ZeroPad(string String, int Length)
-        {
-            if (string.IsNullOrEmpty(String))
-            {
-                String = "0";
-            }
-            if (String.Length > Length)
-            {
-                return String;
-            }
-
-            while (String.Length < Length)
-            {
-                String = "0" + String;
-            }
-
-            return String;
+            return message.ToSameHeaderString(simulateENDEC);
         }
 
         /// <summary>
@@ -257,10 +261,10 @@ namespace EASEncoderFusion
         /// <param name="nwsTone">Plays the NWS tone after the headers.</param>
         /// <param name="censorTone">Plays the CENSOR tone after the headers.</param>
         /// <param name="announcement">Plays the text specified. Leave blank for no message.</param>
-        /// <param name="burst">Deprecated, does not take effect. Use new method GetMemoryStreamFromSASMEX.</param>
+        /// <param name="simulateENDEC">Adds the 2083.3 Hz tone to the start and end of headers.</param>
         /// <returns>MemoryStream</returns>
-        public static MemoryStream GetMemoryStreamFromNewMessage(EASMessage message, bool ebsTone = true, bool nwsTone = false, bool censorTone = false,
-            string announcement = "", bool burst = false)
+        public static MemoryStream GetMemoryStreamFromNewMessage(EASMessage message, bool ebsTone = false, bool nwsTone = false, bool censorTone = false,
+            string announcement = "", bool simulateENDEC = false)
         {
             _useEbsTone = ebsTone;
             _useNwsTone = nwsTone;
@@ -274,28 +278,20 @@ namespace EASEncoderFusion
 
             //1 second silence
 
-            _silenceSamples = new List<int>();
-            while (_silenceSamples.Count < 176400)
-            {
-                _silenceSamples.Add(0);
-            }
+            _silenceSamples = Enumerable.Repeat(0, 176400).ToList();
 
-            string SameHeaderStr = message.ToSameHeaderString();
+            string SameHeaderStr = message.ToSameHeaderString(simulateENDEC);
 
-            byteArray = Encoding.Default.GetBytes(SameHeaderStr);
-            var volume = 5000;
+            byteArray = Encoding.GetEncoding("ISO-8859-1").GetBytes(SameHeaderStr);
+            int volume = 5000;
 
-            var byteSpec = new List<SameWavBit>();
+            List<SameWavBit> byteSpec = new List<SameWavBit>();
             byte thisByte;
             SAMEAudioBit thisBit;
 
-            var powersOf2 = new short[8];
-            for (var i = 0; i < 8; i++)
-            {
-                powersOf2[i] = (short)(1 << i);
-            }
+            var powersOf2 = new short[] { 1, 2, 4, 8, 16, 32, 64, 128 };
 
-            foreach (var t in byteArray)
+            foreach (byte t in byteArray)
             {
                 thisByte = t;
 
@@ -317,7 +313,7 @@ namespace EASEncoderFusion
             _headerSamples = combinedSamples.ToArray();
 
             _eomSamples = new int[0];
-            byteArray = Encoding.Default.GetBytes(message.ToSameEndOfMessageString());
+            byteArray = Encoding.GetEncoding("ISO-8859-1").GetBytes(message.ToSameEndOfMessageString(simulateENDEC));
             volume = 5000;
 
             byteSpec = new List<SameWavBit>();
@@ -375,16 +371,14 @@ namespace EASEncoderFusion
             //1 second silence
 
             _silenceSamples = new List<int>();
-            while (_silenceSamples.Count < 22050)
-            {
-                _silenceSamples.Add(0);
-            }
+
+            _silenceSamples = Enumerable.Repeat(0, 22050).ToList();
 
             string byteFranie = $"{ZeroPad(DateTime.Now.ToUniversalTime().DayOfYear.ToString(), 3)}" + $"{ZeroPad(DateTime.Now.ToUniversalTime().Hour.ToString(), 2)}" + $"{ZeroPad(DateTime.Now.ToUniversalTime().Minute.ToString(), 2)}";
-            string byteFrank = $"\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab" +
+            string byteFrank = $"\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB" +
                 $"ZCZC-CIV-EQW-000000+0005-{byteFranie}-{originator}-";
-            byteArray = Encoding.Default.GetBytes(byteFrank);
-            var volume = 5000;
+            byteArray = Encoding.GetEncoding("ISO-8859-1").GetBytes(byteFrank);
+            int volume = 5000;
 
             var byteSpec = new List<SameWavBit>();
             byte thisByte;
@@ -417,7 +411,7 @@ namespace EASEncoderFusion
 
             _headerSamples = combinedSamples.ToArray();
             _eomSamples = new int[0];
-            //byteArray = Encoding.Default.GetBytes("\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xabNNNN");
+            //byteArray = Encoding.GetEncoding("ISO-8859-1").GetBytes("\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xABNNNN");
             volume = 5000;
             byteSpec = new List<SameWavBit>();
             foreach (var t in byteArray)
@@ -483,19 +477,19 @@ namespace EASEncoderFusion
         private static List<int> PackBytes(string format, decimal sample)
         {
             var output = new List<int>();
+
             foreach (var c in format)
             {
-                var arg = sample;
-
                 switch (c)
                 {
                     case 'v': // little-endian unsigned short
-                        output.Add(((int)arg & 255));
-                        output.Add((((int)arg >> 8) & 255));
-
+                        int intValue = (int)sample;
+                        output.Add(intValue & 0xFF);
+                        output.Add((intValue >> 8) & 0xFF);
                         break;
                 }
             }
+
             return output;
         }
 
@@ -511,6 +505,152 @@ namespace EASEncoderFusion
                 GenerateMemoryStream().CopyTo(wr.BaseStream);
             }
             f.Close();
+        }
+
+        // Generate wave stream - Under construction
+        private static MemoryStream GenerateWaveMemoryStream()
+        {
+            int totalSilenceSamplesWithPadding = totalSilenceSamples + (totalSilenceSamples * (_useEbsTone ? 1 : 0)) + (totalSilenceSamples * (_useNwsTone ? 1 : 0)) + (totalSilenceSamples * (_useCensorTone ? 1 : 0));
+
+            _totalSamples = (TotalHeaderSamples + TotalEomSamples) * 3 + TotalEomSamples * 3;
+
+            if (_useEbsTone)
+            {
+                _totalSamples += (_ebsToneSamples * 8) + totalSilenceSamplesWithPadding;
+            }
+
+            if (_useNwsTone)
+            {
+                _totalSamples += (_nwstoneSamples * 8) + totalSilenceSamplesWithPadding;
+            }
+
+            if (_useCensorTone)
+            {
+                _totalSamples += (_censorToneSamples * 8) + totalSilenceSamplesWithPadding;
+            }
+
+            //Spoken announcement
+            if (!string.IsNullOrEmpty(_announcement))
+            {
+                _totalSamples += _announcementSamples;
+            }
+
+            uint sampleRate = 44100;
+            ushort channels = 2;
+            ushort bitsPerSample = 16;
+            ushort bytesPerSample = (ushort)(bitsPerSample / 8);
+
+            var f = new MemoryStream();
+            var wr = new BinaryWriter(f);
+
+            // WEEZER RIFF - haha jk
+            // just using the standard RIFF format
+            
+            // Header
+            wr.Write("RIFF".ToCharArray());
+            wr.Write(36 + (_totalSamples * channels * bytesPerSample));
+            wr.Write("WAVE".ToCharArray());
+
+            // Sub-chunk 1
+            wr.Write("fmt ".ToCharArray());
+            wr.Write((uint)16); // Sub-chunk 1 size
+            wr.Write((ushort)1); // Audio format (PCM)
+            wr.Write(channels); // Channels
+            wr.Write(sampleRate); // Sample rate
+            wr.Write(sampleRate * channels * bytesPerSample); // Byte rate
+            wr.Write((ushort)(channels * bytesPerSample)); // Block align
+            wr.Write(bitsPerSample); // Bits per sample
+
+            // Sub-chunk 2
+            wr.Write("data".ToCharArray());
+            wr.Write((uint)(_totalSamples * channels * bytesPerSample)); // Sub-chunk 2 size
+
+            foreach (int thisChar in _silenceSamples)
+            {
+                wr.Write((byte)(thisChar));
+            }
+
+            for (int loopCount = 0; loopCount < 3; loopCount++)
+            {
+                foreach (int thisChar in _headerSamples)
+                {
+                    wr.Write((byte)thisChar);
+                }
+
+                foreach (int thisChar in _silenceSamples)
+                {
+                    wr.Write((byte)thisChar);
+                }
+            }
+
+            int toneDurationSeconds = 8;
+
+            if (_useEbsTone)
+            {
+                for (int seconds = 0; seconds < toneDurationSeconds; seconds++)
+                {
+                    for (int loopCounta = 0; loopCounta < _ebsTonesStream.Length; loopCounta++)
+                    {
+                        wr.Write(_ebsTonesStream[loopCounta]);
+                    }
+                }
+            }
+
+            if (_useNwsTone)
+            {
+                for (int seconds = 0; seconds < toneDurationSeconds; seconds++)
+                {
+                    for (int loopCountz = 0; loopCountz < _nwsTonesStream.Length; loopCountz++)
+                    {
+                        wr.Write(_nwsTonesStream[loopCountz]);
+                    }
+                }
+            }
+
+            if (_useCensorTone)
+            {
+                for (int seconds = 0; seconds < toneDurationSeconds; seconds++)
+                {
+                    for (int loopCountz = 0; loopCountz < _censorTonesStream.Length; loopCountz++)
+                    {
+                        wr.Write(_censorTonesStream[loopCountz]);
+                    }
+                }
+            }
+
+            for (int loopCount = 0; loopCount < toneDurationSeconds; loopCount++)
+            {
+                foreach (var thisChar in _silenceSamples)
+                {
+                    wr.Write((byte)thisChar);
+                }
+            }
+
+            // Spoken announcement
+            if (!string.IsNullOrEmpty(_announcement))
+            {
+                for (int announcementLoop = 0; announcementLoop < _announcementSamples; announcementLoop++)
+                {
+                    wr.Write(_announcementStream[announcementLoop]);
+                }
+            }
+
+            for (int loopCount = 0; loopCount < 4; loopCount++)
+            {
+                foreach (var thisChar in _silenceSamples)
+                {
+                    wr.Write((byte)thisChar);
+                }
+
+                foreach (var thisChar in _eomSamples)
+                {
+                    wr.Write((byte)thisChar);
+                }
+            }
+
+            wr.Flush();
+            f.Position = 0;
+            return f;
         }
 
         // Generate wave stream
@@ -591,12 +731,12 @@ namespace EASEncoderFusion
             {
                 foreach (var thisChar in _headerSamples)
                 {
-                    wr.Write((byte)(thisChar));
+                    wr.Write((byte)thisChar);
                 }
 
                 foreach (var thisChar in _silenceSamples)
                 {
-                    wr.Write((byte)(thisChar));
+                    wr.Write((byte)thisChar);
                 }
                 loopCount++;
             }
@@ -780,7 +920,7 @@ namespace EASEncoderFusion
                 SAMEAudioBit thisBit;
 
                 _eomSamples = new int[0];
-                foreach (var t in Encoding.Default.GetBytes("NNNN\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab"))
+                foreach (var t in Encoding.GetEncoding("ISO-8859-1").GetBytes("NNNN\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB"))
                 {
                     thisByte = t;
                     for (var e = 0; e < 8; e++)
@@ -980,24 +1120,17 @@ namespace EASEncoderFusion
         //    return announcementBytes;
         //}
 
-
         public static byte[] GenerateVoiceAnnouncement(string announcement, int volume = 100, int rate = 1)
         {
-            //return Generate(announcement).ToArray();
-            //return Generate(announcement);
-            // Create a speech synthesizer, then a memory stream to pipe the output.
             var synthesizer = new SpeechSynthesizer();
             var waveStream = new MemoryStream();
 
-            // We also set the speech output.
             synthesizer.SetOutputToAudioStream(waveStream,
                 new SpeechAudioFormatInfo(EncodingFormat.Pcm,
                     44100, 16, 2, 176400, 2, null));
 
-            // We can also set the volume, and how fast the rate of speech is.
             synthesizer.Volume = volume;
 
-            // This section is used for error correction. Used to avoid uncaught exceptions.
             #region Error Correction
             if (volume > 100)
             {
@@ -1017,20 +1150,16 @@ namespace EASEncoderFusion
                 synthesizer.Rate = -10;
             }
             synthesizer.Rate = rate;
-            // Original defaults:
             // volume: 100
             // speech rate: 1
             #endregion
 
-            // Select the voice we will use for the announcement.
             synthesizer.SelectVoiceByHints(VoiceGender.Female);
 
-            // Now, we create the announcement.
             synthesizer.Speak(announcement);
 
-            // After the announcement finishes processing, we null the output.
             synthesizer.SetOutputToNull();
-            // Now that we have the processed announcement, we return it as an array waveStream.
+
             return waveStream.ToArray();
         }
 

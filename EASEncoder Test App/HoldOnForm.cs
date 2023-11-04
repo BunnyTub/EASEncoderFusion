@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EASEncoder_UI
@@ -11,22 +10,19 @@ namespace EASEncoder_UI
             InitializeComponent();
         }
 
+        public void CloseForm()
+        {
+            this.BeginInvoke(new Action(() => {
+                CancelExit = false;
+                this.Close();
+                }));
+        }
+
+        private bool CancelExit = true;
+
         private void HoldOnForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //if (MessageBox.Show("The application is currently processing information.\n\nIf you feel the application has frozen, click YES.\nOtherwise, click NO to continue.", "EASEncoder fusion", MessageBoxButtons.YesNo) != DialogResult.Yes)
-            //{
-            //    e.Cancel = true;
-            //    return;
-            //}
-
-            //Environment.FailFast("The user has terminated the processor.", new TaskCanceledException());
-
-            e.Cancel = true;
-
-            // Exit Codes
-            // 0 - Success / No Error
-            // 1 - Forced Quit
-            //Environment.Exit(1);
+            e.Cancel = CancelExit;
         }
 
         private void HoldOnForm_Load(object sender, EventArgs e)
@@ -41,6 +37,11 @@ namespace EASEncoder_UI
             lblTooLong.Show();
             lblTooLong.Text = "Taking too long? Click here to terminate the application.";
             TakingTooLong.Stop();
+        }
+
+        private void lblTooLong_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

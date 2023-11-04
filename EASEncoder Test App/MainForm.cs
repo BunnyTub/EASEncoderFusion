@@ -18,7 +18,6 @@ using NAudio.Wave;
 
 namespace EASEncoder_UI
 {
-
     public partial class MainForm : Form
     {
         private readonly List<SAMERegion> Regions = new List<SAMERegion>();
@@ -40,18 +39,27 @@ namespace EASEncoder_UI
         {
             this.SuspendLayout();
 
-            //if (Debugger.IsAttached)
-            //{
-            //    //chkStressTest.Show();
-            //}
-            //else
-            //{
-            //    //chkStressTest.Hide();
-            //}
-
-            if (File.Exists("label.ini"))
+            switch (Settings.Default.StyleColor)
             {
-                this.Text = File.OpenText("label.ini").ReadToEnd();
+                case "Black":
+                    Theme.BlackStyle(this, true);
+                    break;
+                case "White":
+                    Theme.WhiteStyle(this, true);
+                    break;
+                case "Red":
+                    Theme.RedStyle(this, true);
+                    break;
+                case "Green":
+                    Theme.GreenStyle(this, true);
+                    break;
+                case "Blue":
+                    Theme.BlueStyle(this, true);
+                    break;
+                default:
+                    // On no setting or unknown setting, set the black style as the default.
+                    Theme.BlackStyle(this, false);
+                    break;
             }
 
             lblVersion.Text = this.Tag.ToString() + "\nBunnyTub on Discord";
@@ -60,15 +68,6 @@ namespace EASEncoder_UI
             var bindingList = new BindingList<SAMERegion>(Regions);
             var source = new BindingSource(bindingList, null);
             datagridRegions.DataSource = source;
-
-            //if (Debugger.IsAttached)
-            //{
-            //    btnShowDebug.Show();
-            //}
-            //else
-            //{
-            //    btnShowDebug.Hide();
-            //}
 
             dateStart.ShowUpDown = true;
             dateStart.CustomFormat = "MM/dd/yyyy hh:mm tt";
@@ -132,7 +131,7 @@ namespace EASEncoder_UI
                 //    }
                 //    catch (Exception)
                 //    {
-                        
+
                 //    }
                 //}
             }
@@ -303,14 +302,15 @@ namespace EASEncoder_UI
                 "NWS Tone: " + chkNwsTone.Checked.ToString() + "\n" +
                 "BEEP Tone: " + chkCensorTone.Checked.ToString() + "\n" +
                 "Announcement Generated: " + chkGenerateAnnouncement.Checked.ToString() + "\n" +
+                "Simulate ENDEC: " + chkSimulateENDEC.Checked.ToString() + "\n" +
                 "Starting At: " + _start.ToString("u").Substring(0, _start.ToString("u").Length - 1) + " UTC\n" +
                 "Ending At: " + ClockEnd.ToString("u").Substring(0, ClockEnd.ToString("u").Length - 1) + " UTC\n" +
                 "Locations:\n" + locationText, "EASEncoder Fusion", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
             MessageWait.ShowWait();
             var generatedData = EASEncoderFusion.EASEncoder.CreateNewMessage(newMessage, chkEbsTones.Checked, chkNwsTone.Checked, chkCensorTone.Checked,
-                FormatAnnouncement(txtAnnouncement.Text), chkBurstHeaders.Checked, txtOutputFile.Text);
-            var generatedData2 = generatedData.Replace("\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab\xab", "[Preamble]");
+                FormatAnnouncement(txtAnnouncement.Text), chkSimulateENDEC.Checked, txtOutputFile.Text);
+            var generatedData2 = generatedData.Replace("\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB\xAB", "[Preamble]");
             txtGeneratedData.Text = generatedData2;
             Thread.Sleep(500);
             MessageWait.HideWait();
@@ -323,38 +323,118 @@ namespace EASEncoder_UI
             //else MessageBox.Show("General read failure or timed out.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private bool UseBarcode()
-        {
-            //if (new BarScanForm().ShowDialog() == DialogResult.Yes)
-            //{
-            //    return true;
-            //}
-            //else return false;
-            return false;
-        }
+        //private bool UseBarcode()
+        //{
+        //    //if (new BarScanForm().ShowDialog() == DialogResult.Yes)
+        //    //{
+        //    //    return true;
+        //    //}
+        //    //else return false;
+        //    return false;
+        //}
 
-        private bool UseCard()
-        {
-            if (new SwipeCard().ShowDialog() == DialogResult.Yes) return true;
-            else return false;
-        }
+        //private bool UseCard()
+        //{
+        //    if (new SwipeCard().ShowDialog() == DialogResult.Yes) return true;
+        //    else return false;
+        //}
+
+        //private enum EncoderState
+        //{
+        //    Inactive,
+        //    Processing,
+        //    Playing,
+        //    Finished,
+        //    Aborted,
+        //}
+
+        //private EncoderState _currentEncoderState = EncoderState.Inactive;
+
+        //private EncoderState CurrentEncoderState
+        //{
+        //    get => _currentEncoderState;
+        //    set
+        //    {
+        //        if (_currentEncoderState != value)
+        //        {
+        //            _currentEncoderState = value;
+        //            // Execute on change
+        //            {
+        //                switch (value)
+        //                {
+        //                    case EncoderState.Inactive:
+        //                        break;
+        //                    case EncoderState.Processing:
+        //                        SendProcessingWebhook();
+        //                        break;
+        //                    case EncoderState.Playing:
+        //                        SendPlayingWebhook();
+        //                        break;
+        //                    case EncoderState.Aborted:
+        //                        break;
+        //                    default:
+        //                        break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private void SendPlayingWebhook()
+        //{
+        //    if (string.IsNullOrEmpty(Settings.Default.DiscordWebhook))
+        //    {
+        //        return;
+        //    }
+        //    string AlertInfo = "";
+        //    var payload = new
+        //    {
+        //        //content = "Your message text",
+        //        username = "EASEncoder Fusion Logger",
+        //        avatar_url = "avatar url",
+        //        embeds = new[]
+        //        {
+        //            new
+        //            {
+        //                title = "Emergency Alert Issued",
+        //                description = AlertInfo,
+        //                color = Color.White.ToArgb() & 0xFFFFFF,
+        //                author = new { name = "EASEncoder Fusion", icon_url = "https://example.com/author.png" },
+        //                image = new { url = "image url" }
+        //            }
+        //        }
+        //    };
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.Timeout = new TimeSpan(0, 0, 10);
+        //        var response = client.PostAsync(Settings.Default.DiscordWebhook, new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json")).Result;
+        //        client.Dispose();
+        //        MessageBox.Show(response.IsSuccessStatusCode ? "Embed sent!" : "Failed, status code: " + response.StatusCode);
+        //    }
+        //}
+
+        //private void ResetEncoderState()
+        //{
+        //    _currentEncoderState = EncoderState.Inactive;
+        //}
 
         private void GeneratePlay()
         {
             if (player != null)
             {
                 btnGeneratePlay.Enabled = false;
-                DialogResult response = MessageBox.Show("Are you sure you want to end your message early?\n\nPress ABORT to abruptly stop the message.\nPress RETRY to stop the message with EOM.\nPress IGNORE to go back.", "EASEncoder Fusion", MessageBoxButtons.AbortRetryIgnore);
+                DialogResult response = MessageBox.Show("Are you sure you want to end your message early?\n\nPress ABORT to abruptly stop the message.\nPress RETRY to stop the message with EOM.\nPress IGNORE to go back.", "EASEncoder Fusion", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.None);
                 if (response == DialogResult.Abort)
                 {
                     try
                     {
                         player.Stop();
                         player = null;
+
                     }
                     catch (Exception)
                     {
-
+                        
                     }
                     if (this.WindowState != FormWindowState.Normal && this.WindowState != FormWindowState.Maximized)
                     {
@@ -476,16 +556,24 @@ namespace EASEncoder_UI
 
             //if (!UseBarcode()) return;
 
+            UpTown.Start();
+            DownTown.Stop();
+            DisableElementsWithTag.DisableControlsWithTag(this.Controls, "disable");
+            btnGeneratePlay.Text = "WAIT";
+            Application.DoEvents();
+
             _start = dateStart.Value.ToUniversalTime();
 
             _senderId = txtSender.Text;
 
             _length = ZeroPad(comboLengthHour.Text, 2) + ZeroPad(comboLengthMinutes.Text, 2);
-            
-            EASMessage newMessage = new EASMessage("CIV", "EQW", new List<SAMERegion>(), "0005", DateTime.Now.ToUniversalTime(), _senderId);
+
+            EASMessage newMessage = null;
 
             if (!chkBurstHeaders.Checked) newMessage = new EASMessage(_selectedOriginator.Id, _selectedAlertCode.Id,
                 Regions, _length, _start, _senderId);
+            else newMessage = new EASMessage("CIV", "EQW",
+                new List<SAMERegion>(), "0005", DateTime.Now.ToUniversalTime(), _senderId);
 
             MemoryStream messageStream = null;
 
@@ -556,6 +644,10 @@ namespace EASEncoder_UI
                     {
                         Randomization.Stop();
                     }
+                    UpTown.Stop();
+                    DownTown.Start();
+                    EnableElementsWithTag.EnableControlsWithTag(this.Controls, "disable");
+                    Application.DoEvents();
                     return;
                 }
                 MessageWait.ShowWait();
@@ -570,8 +662,9 @@ namespace EASEncoder_UI
                 "Event Type: " + comboCode.Text + "\n" +
                 "EBS Tone: " + chkEbsTones.Checked.ToString() + "\n" +
                 "NWS Tone: " + chkNwsTone.Checked.ToString() + "\n" +
-                "BEEP Tone: " + chkCensorTone.Checked.ToString() + "\n" +
+                "BNU Tone: " + chkCensorTone.Checked.ToString() + "\n" +
                 "Announcement Generated: " + chkGenerateAnnouncement.Checked.ToString() + "\n" +
+                "Simulate ENDEC: " + chkSimulateENDEC.Checked.ToString() + "\n" +
                 "Starting At: " + _start.ToString("u").Substring(0, _start.ToString("u").Length - 1) + " UTC\n" +
                 "Ending At: " + ClockEnd.ToString("u").Substring(0, ClockEnd.ToString("u").Length - 1) + " UTC\n" +
                 "Locations:\n" + locationText, "EASEncoder Fusion", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
@@ -584,13 +677,23 @@ namespace EASEncoder_UI
                     {
                         Randomization.Stop();
                     }
+                    UpTown.Stop();
+                    DownTown.Start();
+                    EnableElementsWithTag.EnableControlsWithTag(this.Controls, "disable");
+                    Application.DoEvents();
                     return;
                 }
                 MessageWait.ShowWait();
-                if (chkGenerateAnnouncement.Checked) messageStream = EASEncoderFusion.EASEncoder.GetMemoryStreamFromNewMessage(newMessage, chkEbsTones.Checked,
-                chkNwsTone.Checked, chkCensorTone.Checked, FormatAnnouncement(GetAnnouncementFromDetails()), chkBurstHeaders.Checked);
-                else messageStream = EASEncoderFusion.EASEncoder.GetMemoryStreamFromNewMessage(newMessage, chkEbsTones.Checked,
-                chkNwsTone.Checked, chkCensorTone.Checked, FormatAnnouncement(txtAnnouncement.Text), chkBurstHeaders.Checked);
+                if (chkGenerateAnnouncement.Checked)
+                {
+                    messageStream = EASEncoderFusion.EASEncoder.GetMemoryStreamFromNewMessage(newMessage, chkEbsTones.Checked,
+                        chkNwsTone.Checked, chkCensorTone.Checked, FormatAnnouncement(GetAnnouncementFromDetails()), chkSimulateENDEC.Checked);
+                }
+                else
+                {
+                    messageStream = EASEncoderFusion.EASEncoder.GetMemoryStreamFromNewMessage(newMessage, chkEbsTones.Checked,
+                        chkNwsTone.Checked, chkCensorTone.Checked, FormatAnnouncement(txtAnnouncement.Text), chkSimulateENDEC.Checked);
+                }
                 Thread.Sleep(500);
                 MessageWait.HideWait();
             }
@@ -636,8 +739,6 @@ namespace EASEncoder_UI
             }
 
             //btnGeneratePlay.BackColor = Color.Red;
-            DisableElementsWithTag.DisableControlsWithTag(this.Controls, "disable");
-            btnGeneratePlay.Text = "STOP";
 
             player = new WaveOutEvent();
             player.PlaybackStopped += (o, args) =>
@@ -650,6 +751,21 @@ namespace EASEncoder_UI
                 this.SuspendLayout();
                 try { player = null; player?.Dispose(); } catch (Exception) { }
                 EnableElementsWithTag.EnableControlsWithTag(this.Controls, "disable");
+                if (Settings.Default.LeadOut)
+                {
+                    try
+                    {
+                        btnGeneratePlay.Text = "LEAD";
+                        Application.DoEvents();
+                        btnGeneratePlay.Enabled = false;
+                        if (File.Exists(Environment.CurrentDirectory + "\\lead-out.wav")) new SoundPlayer(Environment.CurrentDirectory + "\\lead-out.wav").PlaySync();
+                        else MessageBox.Show("Could not play lead-out.\nMake sure you have a 'lead-out.wav' file in the output folder!", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Could not play lead-out.\nMake sure you have a 'lead-out.wav' file in the output folder!", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    }
+                }
                 btnGeneratePlay.Text = "PLAY";
                 UpTown.Stop();
                 DownTown.Start();
@@ -678,9 +794,6 @@ namespace EASEncoder_UI
 
             player.Init(volumeStream);
 
-            UpTown.Start();
-            DownTown.Stop();
-
             if (Settings.Default.UseCountdown)
             {
                 btnGeneratePlay.Enabled = false;
@@ -688,7 +801,23 @@ namespace EASEncoder_UI
                 return;
             }
 
-            //new DisplayForm().Show();
+            if (Settings.Default.LeadIn)
+            {
+                try
+                {
+                    btnGeneratePlay.Text = "LEAD";
+                    Application.DoEvents();
+                    btnGeneratePlay.Enabled = false;
+                    if (File.Exists(Environment.CurrentDirectory + "\\lead-in.wav")) new SoundPlayer(Environment.CurrentDirectory + "\\lead-in.wav").PlaySync();
+                    else MessageBox.Show("Could not play lead-in.\nMake sure you have a 'lead-in.wav' file in the output folder!", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Could not play lead-in.\nMake sure you have a 'lead-in.wav' file in the output folder!", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            btnGeneratePlay.Enabled = true;
+            btnGeneratePlay.Text = "STOP";
             player.Play();
         }
 
@@ -805,43 +934,77 @@ namespace EASEncoder_UI
 
         }
 
+        private List<object> objects = new List<object>();
+
         private bool ValidateInput(bool ShowDialog)
         {
             if (string.IsNullOrEmpty(txtSender.Text) || txtSender.TextLength != 8)
             {
-                if (ShowDialog) MessageBox.Show("You must enter a 'Sender' id.  Ensure it is 8 characters in length.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                if (ShowDialog)
+                {
+                    MessageBox.Show("You must enter a 'Sender' id.  Ensure it is 8 characters in length.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                if (!objects.Contains(txtSender)) objects.Add(txtSender);
             }
+            else if (objects.Contains(txtSender)) objects.Remove(txtSender);
 
             if (string.IsNullOrEmpty(comboOriginator.Text))
             {
-                if (ShowDialog) MessageBox.Show("You must select an 'Originator' from the drop down menu.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                if (ShowDialog)
+                {
+                    MessageBox.Show("You must select an 'Originator' from the drop down menu.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                if (!objects.Contains(comboOriginator)) objects.Add(comboOriginator);
             }
+            else if (objects.Contains(comboOriginator)) objects.Remove(comboOriginator);
 
             if (string.IsNullOrEmpty(comboCode.Text))
             {
-                if (ShowDialog) MessageBox.Show("You must select a 'Code' (event) from the drop down menu.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                if (ShowDialog)
+                {
+                    MessageBox.Show("You must select a 'Code' (event) from the drop down menu.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                if (!objects.Contains(comboCode)) objects.Add(comboCode);
             }
+            else if (objects.Contains(comboCode)) objects.Remove(comboCode);
 
             if (string.IsNullOrEmpty(comboLengthHour.Text))
             {
-                if (ShowDialog) MessageBox.Show("You must select a 'Length Hour' from the drop down menu.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                if (ShowDialog)
+                {
+                    MessageBox.Show("You must select a 'Length Hour' from the drop down menu.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                if (!objects.Contains(comboLengthHour)) objects.Add(comboLengthHour);
             }
+            else if (objects.Contains(comboLengthHour)) objects.Remove(comboLengthHour);
 
             if (string.IsNullOrEmpty(comboLengthMinutes.Text))
             {
-                if (ShowDialog) MessageBox.Show("You must select a 'Length Minute' from the drop down menu.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                if (ShowDialog)
+                {
+                    MessageBox.Show("You must select a 'Length Minute' from the drop down menu.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                if (!objects.Contains(comboLengthMinutes)) objects.Add(comboLengthMinutes);
             }
+            else if (objects.Contains(comboLengthMinutes)) objects.Remove(comboLengthMinutes);
 
             if (Regions.Count < 1)
             {
-                if (ShowDialog) MessageBox.Show("You must select and add at least 1 location (state/county).", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                if (ShowDialog)
+                {
+                    MessageBox.Show("You must select and add at least 1 location (state/county).", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                if (!objects.Contains(Regions)) objects.Add(Regions);
             }
+            else if (objects.Contains(Regions)) objects.Remove(Regions);
+
+            if (objects.Count != 0) return false;
 
             return true;
         }
@@ -856,8 +1019,14 @@ namespace EASEncoder_UI
                 {
                     MessageBox.Show("You have reached the maximum location limit. Remove some locations and try again to add more.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
-                } else AmountOfLocations++;
+                }
+                else AmountOfLocations++;
 
+                if (AmountOfLocations == 25)
+                {
+                    btnAddRegion.Enabled = false;
+                }
+                else btnAddRegion.Enabled = true;
                 Regions.Add(new SAMERegion(_selectedState, _selectedCounty));
                 var bindingList = new BindingList<SAMERegion>(Regions);
                 var source = new BindingSource(bindingList, null);
@@ -869,7 +1038,7 @@ namespace EASEncoder_UI
 
             //if (comboState.SelectedIndex >= 0 && comboCounty.SelectedIndex >= 0)
             //{
-            //    for (int i = 0; i < 5000; i++)
+            //    for (int i = 0; i < 100-; i++)
             //    {
             //        Regions.Add(new SAMERegion(_selectedState, _selectedCounty));
             //        var bindingList = new BindingList<SAMERegion>(Regions);
@@ -888,32 +1057,15 @@ namespace EASEncoder_UI
 
         private void Button1_Click_1(object sender, EventArgs e)
         {
-            AboutForm aboutDialog = new AboutForm();
+            SettingsForm aboutDialog = new SettingsForm();
             this.Hide();
             aboutDialog.ShowDialog();
             this.Show();
-            //int frequency1 = 540; // Frequency of the first tone in Hz
-            //int frequency2 = 420; // Frequency of the second tone in Hz
-
-            //WaveOutEvent waveOut = new WaveOutEvent();
-            //SignalGenerator toneGenerator = new SignalGenerator();
-
-            //toneGenerator.Frequency = frequency1;
-            //toneGenerator.Type = SignalGeneratorType.Sin;
-
-            //waveOut.Init(toneGenerator);
-            //waveOut.Play();
-
-            //while (true)
-            //{
-            //    Thread.Sleep(1);
-            //    toneGenerator.Frequency = (toneGenerator.Frequency == frequency1) ? frequency2 : frequency1;
-            //}
         }
 
         private void BtnTTSSettings_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("SAPI is currently unavailable.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("This software is still in pre-release, and SAPI 4 TTS is still currently being worked on. It will hopefully be completed by the end of 2023.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             //this.Icon = SystemIcons.Shield;
             //MessageBox.Show("Some SAPI voices are currently incompatible.", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             //Process.Start("C:\\WINDOWS\\SYSWOW64\\SPEECH\\SPEECHUX\\SAPI.CPL");
@@ -1025,9 +1177,23 @@ namespace EASEncoder_UI
             {
                 PlayCountdown.Stop();
                 i = 15;
+                if (Settings.Default.LeadIn)
+                {
+                    try
+                    {
+                        btnGeneratePlay.Text = "LEAD";
+                        Application.DoEvents();
+                        btnGeneratePlay.Enabled = false;
+                        if (File.Exists(Environment.CurrentDirectory + "\\lead-in.wav")) new SoundPlayer(Environment.CurrentDirectory + "\\lead-in.wav").PlaySync();
+                        else MessageBox.Show("Could not play lead-in.\nMake sure you have a 'lead-in.wav' file in the output folder!", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Could not play lead-in.\nMake sure you have a 'lead-in.wav' file in the output folder!", "EASEncoder Fusion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
                 btnGeneratePlay.Enabled = true;
                 btnGeneratePlay.Text = "STOP";
-                //new DisplayForm().Show();
                 player.Play();
             }
         }
@@ -1056,7 +1222,16 @@ namespace EASEncoder_UI
         private void deleteLocationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.SuspendLayout();
-            try { datagridRegions.Rows.RemoveAt(GridIndexRow); AmountOfLocations--; } catch (Exception) { }
+            try
+            {
+                datagridRegions.Rows.RemoveAt(GridIndexRow); AmountOfLocations--;
+                if (AmountOfLocations == 25)
+                {
+                    btnAddRegion.Enabled = false;
+                }
+                else btnAddRegion.Enabled = true;
+            }
+            catch (Exception) { }
             this.ResumeLayout();
         }
 
@@ -1067,9 +1242,7 @@ namespace EASEncoder_UI
             //    this.Invalidate();
             //    this.Validate();
             //}
-
-            
-
+            //MessageBox.Show("My name is alessandro!");
         }
 
         private void btnCopyHeader_Click(object sender, EventArgs e)
@@ -1318,6 +1491,8 @@ namespace EASEncoder_UI
             }
 
             AmountOfLocations = 0;
+
+            btnAddRegion.Enabled = true;
         }
 
         private void LocationContextMenu_Opening(object sender, CancelEventArgs e)
@@ -1432,6 +1607,54 @@ namespace EASEncoder_UI
         {
             txtSender.Text = new string(Enumerable.Range(65, 26).OrderBy(_ => Guid.NewGuid()).Take(8).Select(x => (char)x).ToArray());
         }
+
+        private void HoverMissingShow(object sender, EventArgs e)
+        {
+            //if (!chkBurstHeaders.Checked)
+            {
+                foreach (object ctrl in objects)
+                {
+                    try
+                    {
+                        ((Control)ctrl).BackColor = Color.Red;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
+        }
+
+        private void HoverMissingHide(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            Theme.WhiteStyle(this, false);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Theme.BlackStyle(this, false);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Theme.RedStyle(this, false);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Theme.GreenStyle(this, false);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Theme.BlueStyle(this, false);
+        }
     }
 
     public static class DisableElementsWithTag
@@ -1469,6 +1692,39 @@ namespace EASEncoder_UI
                     EnableControlsWithTag(control.Controls, tag);
                 }
             }
+        }
+    }
+
+    public class SpecialButton : Button
+    {
+        public event EventHandler MouseEnterCustom;
+        public event EventHandler MouseLeaveCustom;
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+            const int WM_NCMOUSEMOVE = 0x02A0;
+            const int WM_NCMOUSELEAVE = 0x02A2;
+
+            if (m.Msg == WM_NCMOUSEMOVE)
+            {
+                OnMouseEnterCustom(EventArgs.Empty);
+            }
+            else if (m.Msg == WM_NCMOUSELEAVE)
+            {
+                OnMouseLeaveCustom(EventArgs.Empty);
+            }
+        }
+
+        protected virtual void OnMouseEnterCustom(EventArgs e)
+        {
+            MouseEnterCustom?.Invoke(this, e);
+        }
+
+        protected virtual void OnMouseLeaveCustom(EventArgs e)
+        {
+            MouseLeaveCustom?.Invoke(this, e);
         }
     }
 }
